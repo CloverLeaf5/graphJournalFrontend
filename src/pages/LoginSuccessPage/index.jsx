@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
 
 function LoginSuccessPage() {
@@ -7,7 +6,7 @@ function LoginSuccessPage() {
   useEffect(() => {
     setTimeout(() => {
       window.close();
-    }, 1500);
+    }, 1200);
   }, []);
   
   return (

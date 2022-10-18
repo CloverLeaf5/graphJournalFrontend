@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import LoginSuccessPage from './pages/LoginSuccessPage';
 import LoginErrorPage from './pages/LoginErrorPage';
 import DashboardPage from './pages/DashboardPage';
+import ProtectedRoutes from './utils/ProtectedRoutes';
+import TagEntryPage from './pages/TagEntryPage';
 
 
 function App() {
@@ -13,11 +15,13 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={ <HomePage/> } />
-        <Route exact path="/login" element={ <LoginPage/> } />
+        <Route path="/login" element={ <LoginPage/> } />
         <Route path="/login/success" element={ <LoginSuccessPage/> } />
         <Route path="/login/error" element={ <LoginErrorPage/> } />
-        <Route path="/dashboard" element={ <DashboardPage/> } />
-        <Route/>
+        <Route element={<ProtectedRoutes/>}>
+          <Route path="/dashboard" element={ <DashboardPage/> } />
+          <Route path="/tagEntry" element={ <TagEntryPage/> } />
+        </Route>
       </Routes>
     </div>
   );
