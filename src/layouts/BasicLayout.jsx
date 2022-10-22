@@ -8,8 +8,9 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-font-size: 31px;
+font-size: 16px;
 `;
+
 
 function BasicLayout ({ children }) {
     return (

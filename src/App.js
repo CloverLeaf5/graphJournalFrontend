@@ -8,6 +8,9 @@ import LoginErrorPage from './pages/LoginErrorPage';
 import DashboardPage from './pages/DashboardPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import TagEntryPage from './pages/TagEntryPage';
+import PersonEntryPage from './pages/PersonEntryPage';
+import GroupEntryPage from './pages/GroupEntryPage';
+import MainEntryPage from './pages/MainEntryPage';
 
 
 function App() {
@@ -21,6 +24,9 @@ function App() {
         <Route element={<ProtectedRoutes/>}>
           <Route path="/dashboard" element={ <DashboardPage/> } />
           <Route path="/tagEntry" element={ <TagEntryPage/> } />
+          <Route path="/personEntry" element={ <PersonEntryPage/> } />
+          <Route path="/groupEntry" element={ <GroupEntryPage/> } />
+          <Route path="/mainEntry" element={ <MainEntryPage/> } />
         </Route>
       </Routes>
     </div>

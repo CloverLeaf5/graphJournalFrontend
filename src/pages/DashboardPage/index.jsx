@@ -31,7 +31,10 @@ const logout = async () => {
   return (
     <BasicLayout>
       <h3>DASHBOARD FOR { user && user.fullName }</h3>
+      <Link to="/mainEntry">Input a new Entry</Link>
       <Link to="/tagEntry">Enter a new Tag</Link>
+      <Link to="/personEntry">Enter a new Person</Link>
+      <Link to="/groupEntry">Enter a new Group</Link>
       <Button onClick={logout}>Logout</Button>
     </BasicLayout>
   );

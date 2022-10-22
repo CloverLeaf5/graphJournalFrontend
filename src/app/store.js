@@ -6,6 +6,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(ReduxLogger),
   reducer: {
-    auth: authReducer,
+    auth: authReducer
   },
 });

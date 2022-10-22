@@ -31,7 +31,12 @@ const TagForm = () => {
     return (
         <>
             <form className='tag-form' onSubmit={submitForm}>
-                <TextInputField name='tag-name' label='Tag Name' placeholder='Tag Name...' value={tagName} onChange={handleChange} />
+                <TextInputField
+                    name='tag-name'
+                    label='Tag Name'
+                    placeholder='Tag Name...'
+                    value={tagName}
+                    onChange={handleChange} />
                 <input type='submit' value='Save Tag' />
             </form>
         </>
