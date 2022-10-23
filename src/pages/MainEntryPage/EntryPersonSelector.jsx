@@ -33,7 +33,7 @@ const EntryPersonSelector = (props) => {
     
     return (
             <div >
-                <h5>Select Tags:</h5>
+                <h5>Select People:</h5>
                 {entryPeopleArray.map((tag, idx) => <TagPersonCard title={tag.title} key={idx} handleClick={()=>handleClick(idx)} />)}
             </div>
     )

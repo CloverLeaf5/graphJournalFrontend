@@ -65,6 +65,12 @@ const EntryDetailsForm = (props) => {
                     placeholder='Title'
                     value={formFields.title}
                     onChange={handleFormChange} />
+            <TextInputField
+                    name='subtitle'
+                    label='Subtitle (or Author Name, etc.)'
+                    placeholder='Subtitle'
+                    value={formFields.subtitle}
+                    onChange={handleFormChange} />
             <label>Details</label>
             <ReactQuill theme="snow" value={props.quillArea} onChange={props.setQuillArea} />
             <TextInputField
@@ -73,6 +79,12 @@ const EntryDetailsForm = (props) => {
                     placeholder='Location'
                     value={formFields.location}
                     onChange={handleFormChange} />
+            <TextInputField
+                    name='rating'
+                    label='Rating (1-5)'
+                    placeholder='#'
+                    value={formFields.rating}
+                    onChange={handleFormChange} /> 
             <TextInputField
                     name='time'
                     label='Approximate time (if applicable) in military time'

@@ -57,7 +57,7 @@ const GroupEntryPage = () => {
             return prevState.filter((person, idx) => {
                 return (idx !== idxToRemove)
             })
-        })
+        });
     }
     
     const handleChange = (e) => {

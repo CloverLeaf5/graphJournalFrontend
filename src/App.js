@@ -11,6 +11,10 @@ import TagEntryPage from './pages/TagEntryPage';
 import PersonEntryPage from './pages/PersonEntryPage';
 import GroupEntryPage from './pages/GroupEntryPage';
 import MainEntryPage from './pages/MainEntryPage';
+import ViewCreationPage from './pages/ViewCreationPage';
+import TagEditPage from './pages/TagEditPage';
+import PersonEditPage from './pages/PersonEditPage';
+import GroupEditPage from './pages/GroupEditPage';
 
 
 function App() {
@@ -27,6 +31,10 @@ function App() {
           <Route path="/personEntry" element={ <PersonEntryPage/> } />
           <Route path="/groupEntry" element={ <GroupEntryPage/> } />
           <Route path="/mainEntry" element={ <MainEntryPage/> } />
+          <Route path="/viewCreation" element={ <ViewCreationPage/> } />
+          <Route path="/tagEdit" element={ <TagEditPage/> } />
+          <Route path="/personEdit" element={ <PersonEditPage/> } />
+          <Route path="/groupEdit" element={ <GroupEditPage/> } />
         </Route>
       </Routes>
     </div>

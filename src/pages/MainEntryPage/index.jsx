@@ -23,7 +23,9 @@ const MainEntryPage = () => {
         startDate: "",
         endDate: "",
         title: "",
+        subtitle: "",
         location: "",
+        rating: "",
         time: ""
     });
     const [showObject, setShowObject] = useState({
@@ -48,7 +50,9 @@ const MainEntryPage = () => {
                 startDate: "",
                 endDate: "",
                 title: "",
+                subtitle: "",
                 location: "",
+                rating: "",
                 time: ""
             });
             setQuillArea("");
@@ -75,8 +79,10 @@ const MainEntryPage = () => {
             startDate: formFields.startDate,
             endDate: formFields.endDate,
             title: formFields.title,
+            subtitle: formFields.subtitle,
             details: quillArea,
             location: formFields.location,
+            rating: formFields.rating,
             approxTime: formFields.time,
             picture: pictureField
         }
@@ -144,7 +150,6 @@ const MainEntryPage = () => {
             {showObject.apiHelper && <APIHelper
                                     entryType={entryType}
                                     APIData={APIData}
-                                    setAPIData={setAPIData}
                                     APIIndexSelection={APIIndexSelection}
                                     setAPIIndexSelection={setAPIIndexSelection}
                                     showObject={showObject}

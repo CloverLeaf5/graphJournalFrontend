@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Button } from 'evergreen-ui';
 import React from 'react'
 import BasicLayout from '../../layouts/BasicLayout'
@@ -7,19 +6,7 @@ import MovieCard from './MovieCard';
 const APIHelper = (props) => {
 
     // The received array will be stored on the server. Will need to send an index of the selection
-    const {APIData, setAPIData, entryType} = props;
-
-    const postData = async (body) => {
-        const response = await axios
-        .post("http://localhost:5000/api/v1/group/newGroup", body, { withCredentials: true })
-        .catch((err) => {
-            console.log("Something went wrong with group creation");
-        });
-    
-        console.log("Response: ", response);
-    }
-
-    
+    const {APIData, entryType} = props;
 
     const cardClicked = (idx) => {
         props.setAPIIndexSelection(idx);
@@ -39,6 +26,13 @@ const APIHelper = (props) => {
                                                     title={movie.title}
                                                     release={movie.release}
                                                     image={movie.image}
+                                                    selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
+                                                    key={idx}
+                                                    handleClick={()=>cardClicked(idx)} />)}
+            {(entryType==="show") && APIData.map((show, idx) => <MovieCard 
+                                                    title={show.title}
+                                                    release={show.release}
+                                                    image={show.image}
                                                     selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
                                                     key={idx}
                                                     handleClick={()=>cardClicked(idx)} />)}
