@@ -21,18 +21,20 @@ const APIHelper = (props) => {
     
     return (
         <BasicLayout>
-            <h2>If more information is needed, it will be diplayed here</h2>
+            <h2>Select a poster for your movie or show</h2>
             {(entryType==="movie") && APIData.map((movie, idx) => <MovieCard 
                                                     title={movie.title}
                                                     release={movie.release}
-                                                    image={movie.image}
+                                                    imageDBPath={movie.imageDBPath}
+                                                    imagePosterPath={movie.imagePosterPath}
                                                     selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
                                                     key={idx}
                                                     handleClick={()=>cardClicked(idx)} />)}
             {(entryType==="show") && APIData.map((show, idx) => <MovieCard 
                                                     title={show.title}
                                                     release={show.release}
-                                                    image={show.image}
+                                                    imageDBPath={show.imageDBPath}
+                                                    imagePosterPath={show.imagePosterPath}
                                                     selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
                                                     key={idx}
                                                     handleClick={()=>cardClicked(idx)} />)}

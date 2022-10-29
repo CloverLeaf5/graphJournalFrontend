@@ -11,6 +11,8 @@ const PersonEditPage = () => {
     const [peopleArray, setPeopleArray] = useState([]);
     const [personIndex, setPersonIndex] = useState(-1);
     const [personName, setPersonName] = useState("");
+    const [personDetails, setPersonDetails] = useState("");
+    const [personPicture, setPersonPicture] = useState("");
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const navigate = useNavigate();
@@ -37,7 +39,9 @@ const PersonEditPage = () => {
     const submitChanges = async () => {
         await axios.post("http://localhost:5000/api/v1/person/updatePerson", {
                         personId: peopleArray[personIndex]._id,
-                        title: personName},
+                        title: personName,
+                        details: personDetails,
+                        picture: personPicture},
                         { withCredentials: true })
                     .catch((err) => console.log(err));
         navigate("/dashboard");
@@ -55,7 +59,13 @@ const PersonEditPage = () => {
         <BasicLayout>
             <h2>Select a Person to edit or delete</h2>
             <PersonTable peopleArray={peopleArray} handleClick={(idx)=>handleClick(idx)}/>
-            {(personIndex>=0) && <PersonEditForm personName={personName} setPersonName={setPersonName} submitChanges={submitChanges} />}
+            {(personIndex>=0) && <PersonEditForm personName={personName}
+                                                setPersonName={setPersonName}
+                                                personDetails={personDetails}
+                                                setPersonDetails={setPersonDetails}
+                                                personPicture={personPicture}
+                                                setPersonPicture={setPersonPicture}
+                                                submitChanges={submitChanges} />}
             {(personIndex>=0) && <Button intent="danger" onClick={()=>setShowDeleteDialog(true)}>Delete Person</Button>}
             <Dialog
                 isShown={showDeleteDialog}

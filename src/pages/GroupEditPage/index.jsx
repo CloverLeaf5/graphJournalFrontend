@@ -12,6 +12,8 @@ const GroupEditPage = () => {
     const [groupsArray, setGroupsArray] = useState([]);
     const [groupIndex, setGroupIndex] = useState(-1);
     const [groupName, setGroupName] = useState("");
+    const [groupDetails, setGroupDetails] = useState("");
+    const [groupPicture, setGroupPicture] = useState("");
     const [fullPersonList, setFullPersonList] = useState([]);
     const [selectedPeople, setSelectedPeople] = useState([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -50,7 +52,14 @@ const GroupEditPage = () => {
 
     const handleChange = (e) => {
         setGroupName(e.target.value);
+    }
 
+    const handleChangeDetails = (e) => {
+        setGroupDetails(e.target.value);
+    }
+
+    const handleChangePicture = (e) => {
+        setGroupPicture(e.target.value);
     }
 
     const cardClicked = (idx) => {
@@ -75,6 +84,8 @@ const GroupEditPage = () => {
         await axios.post("http://localhost:5000/api/v1/group/updateGroup", {
                         groupId: groupsArray[groupIndex]._id,
                         title: groupName,
+                        details: groupDetails,
+                        picture: groupPicture,
                         groupPeople: selectedPeopleIds},
                         { withCredentials: true })
                     .catch((err) => console.log(err));
@@ -98,11 +109,23 @@ const GroupEditPage = () => {
                                                                                 key={idx}
                                                                                 whenClicked={()=>cardClicked(idx)} />)}
             {(groupIndex>=0) && <TextInputField
-                                    name='titile'
-                                    label='Group Name'
+                                    name='title'
+                                    label='Group Name (Try to make globally unique)'
                                     placeholder='Group Name...'
                                     value={groupName}
                                     onChange={handleChange} />}
+            {(groupIndex>=0) && <TextInputField
+                                    name='details'
+                                    label='Group Details (Optional, something about the group)'
+                                    placeholder='Group Details...'
+                                    value={groupDetails}
+                                    onChange={handleChangeDetails} />}
+            {(groupIndex>=0) && <TextInputField
+                                    name='picture'
+                                    label='AWS S3 image key at s3://graph-journal'
+                                    placeholder='Picture key'
+                                    value={groupPicture}
+                                    onChange={handleChangePicture} />}
             {(groupIndex>=0) && <PeopleInGroupTable selectedPeople={selectedPeople}
                                                     personInGroupClick={(idx)=>personInGroupClick(idx)} />}
             {(groupIndex>=0) && <Button onClick={submitChanges}>Submit Group Changes</Button>}

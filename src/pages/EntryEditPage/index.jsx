@@ -1,63 +1,70 @@
 import axios from 'axios';
-import { Button, Checkbox } from 'evergreen-ui';
+import { Button, Checkbox, Dialog } from 'evergreen-ui';
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import BasicLayout from '../../layouts/BasicLayout'
-import APIHelper from './APIHelper';
-import EntryDetailsForm from './EntryDetailsForm';
-import EntryGroupSelector from './EntryGroupSelector';
-import EntryPersonSelector from './EntryPersonSelector';
-import EntryTagSelector from './EntryTagSelector';
-import EntryTypeSelector from './EntryTypeSelector';
-import MapInput from './MapInput';
-import TagPersonTable from './TagPersonTable';
+import APIHelper from '../MainEntryPage/APIHelper';
+import EntryDetailsForm from '../MainEntryPage/EntryDetailsForm';
+import EntryGroupSelector from '../MainEntryPage/EntryGroupSelector';
+import EntryPersonSelector from '../MainEntryPage/EntryPersonSelector';
+import EntryTagSelector from '../MainEntryPage/EntryTagSelector';
+import EntryTypeSelector from '../MainEntryPage/EntryTypeSelector';
+import MapInput from '../MainEntryPage/MapInput';
+import TagPersonTable from '../MainEntryPage/TagPersonTable';
 
-const MainEntryPage = () => {
-    
-    const [entryType, setEntryType] = useState("nothing");
-    const [entryTypeText, setEntryTypeText] = useState("");
-    const [selectedEntryTags, setSelectedEntryTags] = useState([]);
-    const [selectedEntryPeople, setSelectedEntryPeople] = useState([]);
-    const [selectedEntryGroups, setSelectedEntryGroups] = useState([]);
-    const [quillArea, setQuillArea] = useState("");
-    const [pictureFields, setPictureFields] = useState([]);
+const EntryEditPage = () => {
+
+    const location = useLocation();
+    const entry = location.state;
+
+    const [entryType, setEntryType] = useState(entry.type)
+    const [entryTypeText, setEntryTypeText] = useState(entry.typeText);
+    const [selectedEntryTags, setSelectedEntryTags] = useState(entry.tags);
+    const [selectedEntryPeople, setSelectedEntryPeople] = useState(entry.people);
+    const [selectedEntryGroups, setSelectedEntryGroups] = useState(entry.groups);
+    const [quillArea, setQuillArea] = useState(entry.details ? entry.details : "");
+    const [pictureFields, setPictureFields] = useState(entry.pictures);
     const [booleans, setBooleans] = useState({
-        useGoogleMap: true,
-        isStarred: false,
-        isAchievement: false
+        useGoogleMap: entry.useAPILocation,
+        isStarred: entry.isStarred,
+        isAchievement: entry.isAchievement
     });
     const [formFields, setFormFields] = useState({
-        startDate: "",
-        endDate: "",
-        title: "",
-        subtitle: "",
-        location: "",
-        rating: "",
-        time: ""
+        startDate: entry.startDate,
+        endDate: entry.endDate ? entry.endDate : "",
+        title: entry.title,
+        subtitle: entry.subtitle ? entry.subtitle : "",
+        location: entry.location ? entry.location : "",
+        rating: entry.rating ? entry.rating : "",
+        time: entry.approxTime ? entry.approxTime : ""
     });
-    const [metricsArray, setMetricsArray] = useState([]);
+    const [metricsArray, setMetricsArray] = useState(entry.metrics);
     const [showObject, setShowObject] = useState({
-        tags: false,
-        skipTagsButton: false,
-        tagsTable: false, 
-        everythingElse: false,
+        tags: true,
+        skipTagsButton: true,
+        tagsTable: true, 
+        everythingElse: true,
         apiHelper: false,
         requiredData: false
     });
     const [APIData, setAPIData] = useState([]);
     const [APIIndexSelection, setAPIIndexSelection] = useState("");
-    const [mapSearchField, setMapSearchField] = useState("");
-    const [mapLocation, setMapLocation] = useState();
+    const [mapSearchField, setMapSearchField] = useState(entry.APILocationString);
+    const [mapLocation, setMapLocation] = useState(
+        entry.APILocationLat
+        ? {lat: entry.APILocationLat, lng: entry.APILocationLng}
+        : {}
+    );
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
+    
     const navigate = useNavigate();
 
     const postData = async (body) => {
         await axios
-        .post("http://localhost:5000/api/v1/entry/newEntry", body, { withCredentials: true })
+        .post("http://localhost:5000/api/v1/entry/updateEntry", body, { withCredentials: true })
         .then((response) => {
             setAPIData(response.data);
-            setEntryType("nothing");
-            setEntryTypeText("");
             setSelectedEntryTags([]);
             setSelectedEntryPeople([]);
             setSelectedEntryGroups([]);
@@ -73,16 +80,21 @@ const MainEntryPage = () => {
             setQuillArea("");
             setPictureFields([]);
             setMetricsArray([]);
-            if ((entryType === "movie") || (entryType === "show"))
-                setShowObject({
-                    tags: false,
-                    skipTagsButton: false,
-                    tagsTable: false, 
-                    everythingElse: false,
-                    apiHelper: true,
-                    requiredData: false
-                });
-            else {
+            if ((entryType === "movie") || (entryType === "show")){
+                if (response.data.length === 0){
+                    setEntryType("nothing");
+                    navigate("/dashboard");
+                } else {
+                    setShowObject({
+                        tags: false,
+                        skipTagsButton: false,
+                        tagsTable: false, 
+                        everythingElse: false,
+                        apiHelper: true,
+                        requiredData: false
+                    });
+                }
+            } else {
                 setShowObject({
                     tags: false,
                     skipTagsButton: false,
@@ -97,13 +109,15 @@ const MainEntryPage = () => {
 
         })
         .catch((err) => {
-            console.log("Something went wrong with entry creation");
+            console.log("Something went wrong with entry update");
             console.log(err);
         })
     }
 
-    const submitForm = () => {
+
+    const submitUpdates = () => {
         const data = {
+            entryId: entry._id,
             type: entryType,
             typeText: entryTypeText,
             tags: selectedEntryTags,
@@ -139,6 +153,14 @@ const MainEntryPage = () => {
         postData(data)
     }
 
+    const deleteEntry = async () => {
+        await axios.post("http://localhost:5000/api/v1/entry/deleteEntry", 
+                        {entryId: entry._id},
+                        { withCredentials: true })
+                    .catch((err) => console.log(err));
+        navigate("/dashboard");
+    }
+
 
     const APIHelperSubmit = () => {
         setShowObject((prevState) => {
@@ -157,9 +179,10 @@ const MainEntryPage = () => {
         })
     }
     
+
     return (
         <BasicLayout>
-            <h2>Input a new Entry</h2>
+            <h2>Edit Your Entry</h2>
             {showObject.requiredData && <h3 style={{color: "red"}}>Title and (Start)Date are required</h3>}
             <EntryTypeSelector entryType={entryType}
                                 setEntryType={setEntryType}
@@ -218,7 +241,18 @@ const MainEntryPage = () => {
                                                     checked={booleans.useGoogleMap}
                                                     onChange={e=>setBooleans({...booleans, useGoogleMap: e.target.checked})} />}
             {showObject.requiredData && <h3 style={{color: "red"}}>Title and (Start)Date are required</h3>}
-            {showObject.everythingElse && <Button onClick={submitForm}>Submit Entry</Button>}
+            {showObject.everythingElse && <Button onClick={submitUpdates}>Update Entry</Button>}
+            {showObject.everythingElse && <Button intent="danger" onClick={()=>setShowDeleteDialog(true)}>Delete Entry</Button>}
+            <Dialog
+                isShown={showDeleteDialog}
+                title="Confirm Delete Entry"
+                intent="danger"
+                onCloseComplete={() => {
+                    setShowDeleteDialog(false);
+                    deleteEntry();}}
+                confirmLabel="Delete">
+            Are you sure you want to delete this Entry? This cannot be undone and will affect any saved views with this entry.
+            </Dialog>
             {showObject.apiHelper && <APIHelper
                                     entryType={entryType}
                                     APIData={APIData}
@@ -234,4 +268,4 @@ const MainEntryPage = () => {
     )
 }
 
-export default MainEntryPage
+export default EntryEditPage

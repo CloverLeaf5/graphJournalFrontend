@@ -39,6 +39,7 @@ const logout = async () => {
       <Link to="/tagEdit">Edit or Delete a Tag</Link>
       <Link to="/personEdit">Edit or Delete a Person</Link>
       <Link to="/groupEdit">Edit or Delete a Group</Link>
+      <Link to="/entriesViewer">Edit or Delete an Entry</Link>
       <Button onClick={logout}>Logout</Button>
     </BasicLayout>
   );

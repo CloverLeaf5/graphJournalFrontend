@@ -16,7 +16,8 @@ const PersonForm = () => {
 
     const [personDetails, setPersonDetails] = useState({
         title: "",
-        details: ""
+        details: "",
+        picture: ""
     });
 
     const handleChange = (e) => {
@@ -31,7 +32,8 @@ const PersonForm = () => {
         postData(personDetails)
         .then(() => setPersonDetails({
             title: "",
-            details: ""
+            details: "",
+            picture: ""
         }));
     }
 
@@ -49,6 +51,12 @@ const PersonForm = () => {
                     label='Optional details (like relation, etc.)'
                     placeholder='Details...'
                     value={personDetails.details}
+                    onChange={handleChange} />
+                <TextInputField
+                    name='picture'
+                    label='AWS S3 image key at s3://graph-journal'
+                    placeholder='Picture Key'
+                    value={personDetails.picture}
                     onChange={handleChange} />
                 <input type='submit' value='Save Person' />
             </form>

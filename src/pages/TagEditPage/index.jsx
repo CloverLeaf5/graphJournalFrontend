@@ -11,6 +11,8 @@ const TagEditPage = () => {
     const [tagsArray, setTagsArray] = useState([]);
     const [tagIndex, setTagIndex] = useState(-1);
     const [tagName, setTagName] = useState("");
+    const [tagDetails, setTagDetails] = useState("");
+    const [tagPicture, setTagPicture] = useState("");
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     const navigate = useNavigate();
@@ -37,7 +39,9 @@ const TagEditPage = () => {
     const submitChanges = async () => {
         await axios.post("http://localhost:5000/api/v1/tag/updateTag", {
                         tagId: tagsArray[tagIndex]._id,
-                        title: tagName},
+                        title: tagName,
+                        details: tagDetails,
+                        picture: tagPicture},
                         { withCredentials: true })
                     .catch((err) => console.log(err));
         navigate("/dashboard");
@@ -55,7 +59,13 @@ const TagEditPage = () => {
         <BasicLayout>
             <h2>Select a Tag to edit or delete</h2>
             <TagTable tagsArray={tagsArray} handleClick={(idx)=>handleClick(idx)}/>
-            {(tagIndex>=0) && <TagEditForm tagName={tagName} setTagName={setTagName} submitChanges={submitChanges} />}
+            {(tagIndex>=0) && <TagEditForm tagName={tagName}
+                                        setTagName={setTagName}
+                                        submitChanges={submitChanges}
+                                        tagDetails={tagDetails}
+                                        setTagDetails={setTagDetails}
+                                        tagPicture={tagPicture}
+                                        setTagPicture={setTagPicture} />}
             {(tagIndex>=0) && <Button intent="danger" onClick={()=>setShowDeleteDialog(true)}>Delete Tag</Button>}
             <Dialog
                 isShown={showDeleteDialog}

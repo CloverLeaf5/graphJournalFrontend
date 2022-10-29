@@ -13,6 +13,8 @@ const GroupEntryPage = () => {
     const [personList, setPersonList] = useState([]);
     const [selectedPeople, setSelectedPeople] = useState([]);
     const [groupName, setGroupName] = useState("");
+    const [groupDetails, setGroupDetails] = useState("");
+    const [groupPicture, setGroupPicture] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -64,10 +66,19 @@ const GroupEntryPage = () => {
         setGroupName(e.target.value);
     }
 
+    const handleChangeDetails = (e) => {
+        setGroupDetails(e.target.value);
+    }
+
+    const handleChangePicture = (e) => {
+        setGroupPicture(e.target.value);
+    }
+
     const submitGroup = () => {
         const selectedPeopleIds = selectedPeople.map((person) => person._id);
         postData({
             title: groupName,
+            details: groupDetails,
             people: selectedPeopleIds
         })
         .then(() => {
@@ -86,6 +97,18 @@ const GroupEntryPage = () => {
                     placeholder='Group Name...'
                     value={groupName}
                     onChange={handleChange} />
+            <TextInputField
+                    name='details'
+                    label='Group Details (Optional, something about the group)'
+                    placeholder='Group Details...'
+                    value={groupDetails}
+                    onChange={handleChangeDetails} />
+            <TextInputField
+                    name='picture'
+                    label='AWS S3 image key at s3://graph-journal'
+                    placeholder='Picture key'
+                    value={groupPicture}
+                    onChange={handleChangePicture} />
             {selectedPeople.length>0 && <h5>Selected people:</h5>}
             {selectedPeople.map((person, idx) => <NameCard title={person.title} key={idx} whenClicked={()=>selectedCardClicked(idx)} />)}
             <Button onClick={submitGroup}>Save Group</Button>

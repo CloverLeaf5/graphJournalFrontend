@@ -17,14 +17,24 @@ const postData = async (body) => {
 const TagForm = () => {
 
     const [tagName, setTagName] = useState("");
+    const [tagDetails, setTagDetails] = useState("");
+    const [tagPicture, setTagPicture] = useState("");
 
     const handleChange = (e) => {
         setTagName(e.target.value);
     }
 
+    const handleDetailsChange = (e) => {
+        setTagDetails(e.target.value);
+    }
+
+    const handlePictureChange = (e) => {
+        setTagPicture(e.target.value);
+    }
+
     const submitForm = (e) => {
         e.preventDefault();
-        postData({title: tagName})
+        postData({title: tagName, details: tagDetails, picture: tagPicture})
         .then(() => setTagName(""));
     }
 
@@ -37,6 +47,18 @@ const TagForm = () => {
                     placeholder='Tag Name...'
                     value={tagName}
                     onChange={handleChange} />
+                <TextInputField
+                    name='tag-details'
+                    label='Tag Details (Optional, something about the tag)'
+                    placeholder='Tag Details...'
+                    value={tagDetails}
+                    onChange={handleDetailsChange} />
+                <TextInputField
+                    name='tag-picture'
+                    label='AWS S3 image key at s3://graph-journal'
+                    placeholder='Picture Key'
+                    value={tagPicture}
+                    onChange={handlePictureChange} />
                 <input type='submit' value='Save Tag' />
             </form>
         </>

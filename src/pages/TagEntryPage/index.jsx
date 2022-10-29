@@ -10,7 +10,7 @@ const TagEntryPage = () => {
         <BasicLayout>
             <h2>Input a new Tag</h2>
             <h6>Not everything needs a tag, some things are built in.</h6>
-            <h6>Tags are best for combining input types.</h6>
+            <h6>Tags are best for combining input types or marking a subset of them.</h6>
             <TagForm/>
             <Link to="/dashboard">Go Back</Link>
         </BasicLayout>

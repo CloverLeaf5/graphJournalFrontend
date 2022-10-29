@@ -15,6 +15,8 @@ import ViewCreationPage from './pages/ViewCreationPage';
 import TagEditPage from './pages/TagEditPage';
 import PersonEditPage from './pages/PersonEditPage';
 import GroupEditPage from './pages/GroupEditPage';
+import EntriesViewerPage from './pages/EntriesViewerPage';
+import EntryEditPage from './pages/EntryEditPage';
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route path="/tagEdit" element={ <TagEditPage/> } />
           <Route path="/personEdit" element={ <PersonEditPage/> } />
           <Route path="/groupEdit" element={ <GroupEditPage/> } />
+          <Route path="/entriesViewer" element={ <EntriesViewerPage/> } />
+          <Route path="/entryEdit" element={ <EntryEditPage/> } />
         </Route>
       </Routes>
     </div>
