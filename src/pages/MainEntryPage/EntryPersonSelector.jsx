@@ -21,8 +21,8 @@ const EntryPersonSelector = (props) => {
     }, [])
 
     const handleClick = (idx) => {
-        let alreadyIn = props.selectedEntryPeople.find((tag) => {
-            return tag._id === entryPeopleArray[idx]._id;
+        let alreadyIn = props.selectedEntryPeople.find((person) => {
+            return person._id === entryPeopleArray[idx]._id;
         });
 
         if (alreadyIn) return;
@@ -34,7 +34,7 @@ const EntryPersonSelector = (props) => {
     return (
             <div >
                 <h5>Select People:</h5>
-                {entryPeopleArray.map((tag, idx) => <TagPersonCard title={tag.title} key={idx} handleClick={()=>handleClick(idx)} />)}
+                {entryPeopleArray.map((person, idx) => <TagPersonCard title={person.title} key={idx} handleClick={()=>handleClick(idx)} />)}
             </div>
     )
 

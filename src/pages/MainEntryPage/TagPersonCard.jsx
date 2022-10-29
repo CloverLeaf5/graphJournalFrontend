@@ -13,6 +13,3 @@ const TagPersonCard = (props) => {
 }
 
 export default TagPersonCard
-
-
-//onClick={props.whenClicked}

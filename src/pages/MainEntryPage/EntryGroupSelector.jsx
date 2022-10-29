@@ -21,8 +21,8 @@ const EntryGroupSelector = (props) => {
     }, [])
 
     const handleClick = (idx) => {
-        let alreadyIn = props.selectedEntryGroups.find((tag) => {
-            return tag._id === entryGroupsArray[idx]._id;
+        let alreadyIn = props.selectedEntryGroups.find((group) => {
+            return group._id === entryGroupsArray[idx]._id;
         });
 
         if (alreadyIn) return;
