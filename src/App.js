@@ -18,6 +18,10 @@ import GroupEditPage from './pages/GroupEditPage';
 import EntriesViewerPage from './pages/EntriesViewerPage';
 import EntryEditPage from './pages/EntryEditPage';
 import ViewEditPage from './pages/ViewEditPage';
+import ViewCombineSearchPage from './pages/ViewCombineSearchPage';
+import ViewFilterSearchPage from './pages/ViewFilterSearchPage';
+import SavedViewPage from './pages/SavedViewPage';
+
 
 
 function App() {
@@ -41,6 +45,9 @@ function App() {
           <Route path="/entriesViewer" element={ <EntriesViewerPage/> } />
           <Route path="/entryEdit" element={ <EntryEditPage/> } />
           <Route path="/viewEdit" element={ <ViewEditPage/> } />
+          <Route path="/viewCombine" element={ <ViewCombineSearchPage/> } />
+          <Route path="/viewFilter" element={ <ViewFilterSearchPage/> } />
+          <Route path="/savedView" element={ <SavedViewPage/> } />
         </Route>
       </Routes>
     </div>

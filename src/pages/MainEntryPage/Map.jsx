@@ -20,7 +20,7 @@ const Map = (props) => {
     }), []);
     
     useEffect(() => {
-        mapLocation.lat ? setCenter(mapLocation)
+        (mapLocation && mapLocation.lat) ? setCenter(mapLocation)
         : navigator.geolocation.getCurrentPosition(position => {
             setCenter({
                 lat: position.coords.latitude,
@@ -49,7 +49,7 @@ const Map = (props) => {
                 options={options}
                 onLoad={onLoad}
                 onUnMount={onUnMount}>
-                {renderMarker && mapLocation.lat && <Marker position={mapLocation} />}
+                {renderMarker && mapLocation && mapLocation.lat && <Marker position={mapLocation} />}
             </GoogleMap>
         </div>
     )

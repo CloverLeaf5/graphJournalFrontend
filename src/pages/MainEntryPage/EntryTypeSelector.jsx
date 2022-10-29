@@ -30,18 +30,25 @@ const EntryTypeSelector = (props) => {
         const typeObject = entryTypesArray.find((obj) => {
             return obj.text === selection;
         })
-        setEntryType(typeObject.value);
-        setEntryTypeText(typeObject.text)
-        if (typeObject.value !== "nothing"){
-            props.setShowObject((prevState) => {
-                return { ...prevState, tags: true, skipTagsButton: true};
-            })
+
+        if (typeObject){
+            setEntryType(typeObject.value);
+            setEntryTypeText(typeObject.text)
+            if (typeObject.value !== "nothing"){
+                props.setShowObject((prevState) => {
+                    return { ...prevState, tags: true, skipTagsButton: true};
+                })
+            }
+            if (typeObject.value === "nothing"){
+                props.setShowObject((prevState) => {
+                    return { ...prevState, tags: false, skipTagsButton: false, everythingElse: false};
+                })
+            }
+        } else {
+            setEntryType("nothing");
+            setEntryTypeText("")
         }
-        if (typeObject.value === "nothing"){
-            props.setShowObject((prevState) => {
-                return { ...prevState, tags: false, skipTagsButton: false, everythingElse: false};
-            })
-        }
+        
     }
 
     

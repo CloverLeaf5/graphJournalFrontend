@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Combobox, Table, TextInputField } from 'evergreen-ui'
 import React, { useEffect, useState } from 'react'
 import BasicLayout from "../../layouts/BasicLayout"
@@ -7,7 +7,10 @@ import TagPersonCard from "../MainEntryPage/TagPersonCard"
 
 const TABLE_WIDTH = 300;
 
-const ViewCreationPage = () => {
+const ViewCombineSearchPage = () => {
+
+    const location = useLocation();
+    const currentEntries = location.state.entriesArray
 
     const [entryTypesArray, setEntryTypesArray] = useState([])
     const [tagsArray, setTagsArray] = useState([])
@@ -23,7 +26,6 @@ const ViewCreationPage = () => {
     const [startDateEnd, setStartDateEnd] = useState("")
     const [endDateStart, setEndDateStart] = useState("")
     const [endDateEnd, setEndDateEnd] = useState("")
-
 
     const navigate = useNavigate();
     
@@ -62,7 +64,7 @@ const ViewCreationPage = () => {
                     setGroupsArray(response.data);
                 }
             } catch(err) {
-                console.log("Something went wrong with getting the Groups");
+                console.log("Something went wrong with getting the Tags");
             }
         }
         fetchData();
@@ -83,16 +85,24 @@ const ViewCreationPage = () => {
         try {
             const response = await axios.post("http://localhost:5000/api/v1/view/findEntries", body, { withCredentials: true })
             if (response && response.data){
-                const data = response.data;
-                for (const entry of data){
+                const foundEntries = response.data
+                // Must strip the time part of the dates
+                for (const entry of foundEntries){
                     entry.startDate = entry.startDate.slice(0,10)
                     if (entry.endDate) entry.endDate = entry.endDate.slice(0,10)
                 }
+                // Only add new ones to the array
+                const currentEntriesIDs = currentEntries.map((entry) => (entry._id))
+                for (const entry of foundEntries){
+                    if (!currentEntriesIDs.includes(entry._id)){
+                        currentEntries.push(entry)
+                    }
+                }
                 navigate("/viewEdit", {
                     state: {
-                        entriesArray: data,
-                        title: "",
-                        details: ""
+                        entriesArray: currentEntries,
+                        title: location.state.title,
+                        details: location.state.details
                     }
                 })
             }
@@ -265,4 +275,4 @@ const ViewCreationPage = () => {
     )
 }
 
-export default ViewCreationPage
+export default ViewCombineSearchPage
