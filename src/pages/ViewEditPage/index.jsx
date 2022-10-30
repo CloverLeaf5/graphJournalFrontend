@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
+import EntryCardOriginal from './EntryCardOriginal';
 import "./quill.snow.css";
 
 const ViewEditPage = () => {
@@ -18,14 +19,16 @@ const ViewEditPage = () => {
     const [entriesArray, setEntriesArray] = useState(location.state.entriesArray);
     const [title, setTitle] = useState(location.state.title);
     const [details, setDetails] = useState(location.state.details);
-    const [viewType, setViewType] = useState("table")
+    const [viewType, setViewType] = useState(location.state.viewType)
+    const [missingData, setMissingData] = useState(false)
 
     const handleCombineClick = () => {
         navigate("/viewCombine", {
             state: {
                 title: title,
                 details: details,
-                entriesArray: entriesArray
+                entriesArray: entriesArray,
+                viewType: viewType
             }
         })
     }
@@ -35,7 +38,8 @@ const ViewEditPage = () => {
             state: {
                 title: title,
                 details: details,
-                entriesArray: entriesArray
+                entriesArray: entriesArray,
+                viewType: viewType
             }
         })
     }
@@ -55,6 +59,12 @@ const ViewEditPage = () => {
             entries: entryIDs,
             viewType: viewType
         }
+        if(title===""){
+            setMissingData(true);
+            return;
+        }
+        else
+            setMissingData(false);
         try{
             const response = await axios.post("http://localhost:5000/api/v1/view/saveView", body, { withCredentials: true })
             if (response && response.data) {
@@ -78,8 +88,9 @@ const ViewEditPage = () => {
     return (
         <div>
             <BasicLayout>
+                {missingData && <h3 style={{color: "red"}}>Title is required</h3>}
                 <label>View Title</label>
-                <TextInput placeholder='View Title' value={title} onChange={(e)=>setTitle(e.target.value)} />
+                <TextInput placeholder='View Title' value={title} onChange={(e)=>setTitle(e.target.value)} isInvalid={missingData} required />
                 <label>View Details</label>
                 <ReactQuill theme="snow" value={details} onChange={setDetails} />
                 <div>
@@ -93,8 +104,9 @@ const ViewEditPage = () => {
                     <option value="timeline">Timeline</option>
                 </Select>
             </BasicLayout>
+
             {viewType==="table" && <div className="entry-table">
-                <h2>List of Entries (click to edit or delete)</h2>
+                <h2>List of Entries (click to remove from view)</h2>
                 <Table.Head>
                     <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>Date</Table.TextCell>
                     <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>Type</Table.TextCell>
@@ -123,7 +135,22 @@ const ViewEditPage = () => {
                     )}
                 </Table.Body>
             </div>}
+
+            {viewType==="traditional" && <div className="traditional">
+                <h2>List of Entries (click to remove from view)</h2>
+                    {entriesArray.map((entry, idx) => 
+                        <Popover key={idx} content={({ close }) => (
+                            <BasicLayout>
+                                <Button onClick={()=>removeClickedIndex(close)}>Remove from View</Button>
+                                <Button onClick={close}>Cancel</Button>
+                            </BasicLayout>
+                            )}>
+                            <EntryCardOriginal entry={entry} />
+                        </Popover>
+                    )}
+            </div>}
             <BasicLayout>
+                {missingData && <h3 style={{color: "red"}}>Title is required</h3>}
                 <Button onClick={saveView}>Save View</Button>
                 <Link to="/dashboard">Go Back</Link>
             </BasicLayout>

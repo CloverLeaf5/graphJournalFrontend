@@ -102,7 +102,8 @@ const ViewCombineSearchPage = () => {
                     state: {
                         entriesArray: currentEntries,
                         title: location.state.title,
-                        details: location.state.details
+                        details: location.state.details,
+                        viewType: location.state.viewType
                     }
                 })
             }

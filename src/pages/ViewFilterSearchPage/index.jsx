@@ -82,7 +82,8 @@ const ViewFilterSearchPage = () => {
             state: {
                 entriesArray: filteredEntries,
                 title: location.state.title,
-                details: location.state.details
+                details: location.state.details,
+                viewType: location.state.viewType
             }
         })
     }
@@ -98,7 +99,8 @@ const ViewFilterSearchPage = () => {
             state: {
                 entriesArray: filteredEntries,
                 title: location.state.title,
-                details: location.state.details
+                details: location.state.details,
+                viewType: location.state.viewType
             }
         })
     }
@@ -114,7 +116,8 @@ const ViewFilterSearchPage = () => {
             state: {
                 entriesArray: filteredEntries,
                 title: location.state.title,
-                details: location.state.details
+                details: location.state.details,
+                viewType: location.state.viewType
             }
         })
     }
@@ -130,7 +133,8 @@ const ViewFilterSearchPage = () => {
             state: {
                 entriesArray: filteredEntries,
                 title: location.state.title,
-                details: location.state.details
+                details: location.state.details,
+                viewType: location.state.viewType
             }
         })
     }
@@ -141,7 +145,8 @@ const ViewFilterSearchPage = () => {
             state: {
                 entriesArray: location.state.entriesArray,
                 title: location.state.title,
-                details: location.state.details
+                details: location.state.details,
+                viewType: location.state.viewType
             }
         })
     }

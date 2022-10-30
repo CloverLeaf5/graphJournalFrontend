@@ -92,12 +92,13 @@ const ViewCreationPage = () => {
                     state: {
                         entriesArray: data,
                         title: "",
-                        details: ""
+                        details: "",
+                        viewType: "table"
                     }
                 })
             }
         } catch(err) {
-            console.log("Something went wrong with getting the posting the data");
+            console.log("Something went wrong with posting the data");
         }
     }
 
