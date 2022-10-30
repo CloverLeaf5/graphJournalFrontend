@@ -56,7 +56,6 @@ const MainEntryPage = () => {
         .post("http://localhost:5000/api/v1/entry/newEntry", body, { withCredentials: true })
         .then((response) => {
             setAPIData(response.data);
-            setEntryType("nothing");
             setEntryTypeText("");
             setSelectedEntryTags([]);
             setSelectedEntryPeople([]);
@@ -221,6 +220,7 @@ const MainEntryPage = () => {
             {showObject.everythingElse && <Button onClick={submitForm}>Submit Entry</Button>}
             {showObject.apiHelper && <APIHelper
                                     entryType={entryType}
+                                    setEntryType={setEntryType}
                                     APIData={APIData}
                                     APIIndexSelection={APIIndexSelection}
                                     setAPIIndexSelection={setAPIIndexSelection}

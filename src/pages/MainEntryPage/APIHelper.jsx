@@ -6,7 +6,7 @@ import MovieCard from './MovieCard';
 const APIHelper = (props) => {
 
     // The received array will be stored on the server. Will need to send an index of the selection
-    const {APIData, entryType} = props;
+    const {APIData, entryType, setEntryType} = props;
 
     const cardClicked = (idx) => {
         props.setAPIIndexSelection(idx);
@@ -16,6 +16,7 @@ const APIHelper = (props) => {
         props.setShowObject((prevState) => {
             return {...prevState, apiHelper: false}
         })
+        setEntryType("nothing");
     }
 
     
