@@ -93,7 +93,8 @@ const ViewCreationPage = () => {
                         entriesArray: data,
                         title: "",
                         details: "",
-                        viewType: "table"
+                        viewType: "table",
+                        useMap: "true"
                     }
                 })
             }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Button, Checkbox, Pane, Popover, Select, Table, TextInput } from 'evergreen-ui';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
@@ -24,7 +24,8 @@ const ViewEditPage = () => {
     const [details, setDetails] = useState(location.state.details);
     const [viewType, setViewType] = useState(location.state.viewType);
     const [missingData, setMissingData] = useState(false);
-    const [useMap, setUseMap] = useState(true);
+    const [useMap, setUseMap] = useState(location.state.useGoogleMap);
+    
 
     const handleCombineClick = () => {
         navigate("/viewCombine", {
@@ -32,7 +33,12 @@ const ViewEditPage = () => {
                 title: title,
                 details: details,
                 entriesArray: entriesArray,
-                viewType: viewType
+                viewType: viewType,
+                useGoogleMap: useMap,
+                googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
             }
         })
     }
@@ -43,7 +49,12 @@ const ViewEditPage = () => {
                 title: title,
                 details: details,
                 entriesArray: entriesArray,
-                viewType: viewType
+                viewType: viewType,
+                useGoogleMap: useMap,
+                googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
             }
         })
     }
@@ -53,10 +64,11 @@ const ViewEditPage = () => {
         copiedArray.splice(clickedIndex,1);
         setEntriesArray(copiedArray);
         close();
-        console.log(mapRef.current?.getZoom());
-        console.log(mapRef.current?.getCenter().lat());
-        console.log(mapRef.current?.getCenter().lng ());
-        console.log(mapRef.current?.getMapTypeId());
+        console.log(mapRef.current?.getCenter().lat())
+        console.log(mapRef.current?.getCenter().lng())
+        console.log(mapRef.current?.getZoom())
+        console.log(mapRef.current?.getMapTypeId())
+        console.log(useMap)
     }
 
     const saveView = async () => {
@@ -65,7 +77,12 @@ const ViewEditPage = () => {
             title: title,
             details: details,
             entries: entryIDs,
-            viewType: viewType
+            viewType: viewType,
+            useGoogleMap: useMap,
+            googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+            googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+            googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+            googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
         }
         if(title===""){
             setMissingData(true);
@@ -81,7 +98,12 @@ const ViewEditPage = () => {
                         title: title,
                         details: details,
                         entries: entriesArray,
-                        viewType: viewType
+                        viewType: viewType,
+                        useGoogleMap: useMap,
+                        googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                        googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                        googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                        googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
                     }
                 });
             }
@@ -105,7 +127,7 @@ const ViewEditPage = () => {
                     <Button onClick={handleCombineClick}>Combine With Another Search</Button>
                     <Button onClick={handleFilterClick}>Filter Out Entries</Button>
                 </div>
-                {useMap && <Map entriesArray={entriesArray} mapRef={mapRef} />}
+                {useMap && <Map entriesArray={entriesArray} mapRef={mapRef} location={location} />}
                 <Checkbox label="Use Google Map" checked={useMap} onChange={e=>setUseMap(e.target.checked)} />
                 <label>Select a View Type</label>
                 <Select value={viewType} onChange={e=>setViewType(e.target.value)}>

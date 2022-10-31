@@ -103,7 +103,12 @@ const ViewCombineSearchPage = () => {
                         entriesArray: currentEntries,
                         title: location.state.title,
                         details: location.state.details,
-                        viewType: location.state.viewType
+                        viewType: location.state.viewType,
+                        useGoogleMap: location.state.useGoogleMap,
+                        googleMapCenterLat: location.state.googleMapCenterLat,
+                        googleMapCenterLng: location.state.googleMapCenterLng,
+                        googleMapZoom: location.state.googleMapZoom,
+                        googleMapTypeId: location.state.googleMapTypeId
                     }
                 })
             }

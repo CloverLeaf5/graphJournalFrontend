@@ -72,7 +72,7 @@ const MainEntryPage = () => {
             setQuillArea("");
             setPictureFields([]);
             setMetricsArray([]);
-            if ((entryType === "movie") || (entryType === "show"))
+            if ((entryType === "movie") || (entryType === "show") || (entryType === "book"))
                 setShowObject({
                     tags: false,
                     skipTagsButton: false,

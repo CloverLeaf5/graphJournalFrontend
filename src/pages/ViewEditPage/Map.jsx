@@ -7,7 +7,7 @@ const homeCenterLng = -111.919051;
 
 const Map = (props) => {
 
-    const { entriesArray, mapRef } = props;
+    const { entriesArray, mapRef, location } = props;
     const [renderMarkers, setRenderMarkers] = useState(false)
     const [locationsArray, setLocationsArray] = useState([]);
     
@@ -60,7 +60,14 @@ const Map = (props) => {
     }, [isLoaded])
     
 
-    const onLoad = useCallback((map) => (mapRef.current=map), [mapRef])
+    const onLoad = useCallback((map) => {
+        mapRef.current=map;
+        if(location.state.googleMapCenterLat && location.state.googleMapCenterLat.toString().length>0) {
+            mapRef.current.setCenter({lat: location.state.googleMapCenterLat, lng: location.state.googleMapCenterLng})
+            mapRef.current.setMapTypeId(location.state.googleMapTypeId)
+            mapRef.current.setZoom(location.state.googleMapZoom)
+        }
+    }, [mapRef])
     const onUnMount = () => (mapRef.current=null)
 
     if (!isLoaded) return <div>Loading...</div>

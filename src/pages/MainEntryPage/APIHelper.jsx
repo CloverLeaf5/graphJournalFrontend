@@ -39,6 +39,14 @@ const APIHelper = (props) => {
                                                     selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
                                                     key={idx}
                                                     handleClick={()=>cardClicked(idx)} />)}
+            {(entryType==="book") && APIData.map((book, idx) => <MovieCard 
+                                                    title={book.title}
+                                                    release={book.author}
+                                                    imageDBPath={book.imageDBPath}
+                                                    imagePosterPath={book.imagePosterPath}
+                                                    selectedClass={(props.APIIndexSelection === idx) ? 'selected-card' : ''}
+                                                    key={idx}
+                                                    handleClick={()=>cardClicked(idx)} />)}
             <Button onClick={props.APIHelperSubmit}>Submit choice</Button>
             <Button onClick={noneOfTheseClick}>None of these / Skip</Button>
         </BasicLayout>
