@@ -33,7 +33,6 @@ const EntryTypeSelector = (props) => {
 
         if (typeObject){
             setEntryType(typeObject.value);
-            console.log(typeObject.value)
             setEntryTypeText(typeObject.text)
             if (typeObject.value !== "nothing"){
                 props.setShowObject((prevState) => {

@@ -78,19 +78,38 @@ const ViewFilterSearchPage = () => {
         const filteredEntries = currentEntries.filter((entry) =>{
             return entry.type !== entryType
         })
-        navigate("/viewEdit", {
-            state: {
-                entriesArray: filteredEntries,
-                title: location.state.title,
-                details: location.state.details,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
-                googleMapCenterLat: location.state.googleMapCenterLat,
-                googleMapCenterLng: location.state.googleMapCenterLng,
-                googleMapZoom: location.state.googleMapZoom,
-                googleMapTypeId: location.state.googleMapTypeId
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId
+                }
+            })
+        }
+        
     }
 
     ///TAG
@@ -100,19 +119,37 @@ const ViewFilterSearchPage = () => {
             if (currentTags.length===0) return true;
             else return !currentTags.includes(selectedTag)
         })
-        navigate("/viewEdit", {
-            state: {
-                entriesArray: filteredEntries,
-                title: location.state.title,
-                details: location.state.details,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
-                googleMapCenterLat: location.state.googleMapCenterLat,
-                googleMapCenterLng: location.state.googleMapCenterLng,
-                googleMapZoom: location.state.googleMapZoom,
-                googleMapTypeId: location.state.googleMapTypeId
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId
+                }
+            })
+        }
     }
 
     ///PERSON
@@ -122,57 +159,83 @@ const ViewFilterSearchPage = () => {
             if (currentPeople.length===0) return true;
             else return !currentPeople.includes(selectedPerson)
         })
-        navigate("/viewEdit", {
-            state: {
-                entriesArray: filteredEntries,
-                title: location.state.title,
-                details: location.state.details,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
-                googleMapCenterLat: location.state.googleMapCenterLat,
-                googleMapCenterLng: location.state.googleMapCenterLng,
-                googleMapZoom: location.state.googleMapZoom,
-                googleMapTypeId: location.state.googleMapTypeId
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId
+                }
+            })
+        }
     }
 
-    ///TAG
+    ///GROUP
     const filterByGroup = () => {
         const filteredEntries = currentEntries.filter((entry) =>{
             const currentGroups = entry.groups.map((group)=>group.title)
             if (currentGroups.length===0) return true;
             else return !currentGroups.includes(selectedGroup)
         })
-        navigate("/viewEdit", {
-            state: {
-                entriesArray: filteredEntries,
-                title: location.state.title,
-                details: location.state.details,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
-                googleMapCenterLat: location.state.googleMapCenterLat,
-                googleMapCenterLng: location.state.googleMapCenterLng,
-                googleMapZoom: location.state.googleMapZoom,
-                googleMapTypeId: location.state.googleMapTypeId
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewEdit", {
+                state: {
+                    entriesArray: filteredEntries,
+                    title: location.state.title,
+                    details: location.state.details,
+                    viewType: location.state.viewType,
+                    useGoogleMap: location.state.useGoogleMap,
+                    googleMapCenterLat: location.state.googleMapCenterLat,
+                    googleMapCenterLng: location.state.googleMapCenterLng,
+                    googleMapZoom: location.state.googleMapZoom,
+                    googleMapTypeId: location.state.googleMapTypeId
+                }
+            })
+        }
     }
 
 
     const handleCancel = () => {
         navigate("/viewEdit", {
-            state: {
-                entriesArray: location.state.entriesArray,
-                title: location.state.title,
-                details: location.state.details,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
-                googleMapCenterLat: location.state.googleMapCenterLat,
-                googleMapCenterLng: location.state.googleMapCenterLng,
-                googleMapZoom: location.state.googleMapZoom,
-                googleMapTypeId: location.state.googleMapTypeId
-            }
+            state: location.state
         })
     }
 

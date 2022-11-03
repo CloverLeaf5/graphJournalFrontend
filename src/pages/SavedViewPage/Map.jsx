@@ -7,24 +7,27 @@ const homeCenterLng = -111.919051;
 
 const Map = (props) => {
 
-    const { entriesArray, mapRef, location } = props;
-    const [renderMarkers, setRenderMarkers] = useState(false)
-    const [locationsArray, setLocationsArray] = useState([]);
-    
-    const [center, setCenter] = useState({
+    const { entriesArray, googleMapCenterLat, googleMapCenterLng, googleMapZoom, googleMapTypeId } = props; // Needed to set the map and markers
+    const [renderMarkers, setRenderMarkers] = useState(false) // Only render when the map is ready
+    const [locationsArray, setLocationsArray] = useState([]); // For setting the markers
+    const [center, setCenter] = useState({ // A baseline home center
         lat: homeCenterLat,
         lng: homeCenterLng
     })
 
+    // Options for the map passed as props below
     const options = useMemo(() => ({
-        clickableIcons: false
+        clickableIcons: false,
+        disableDefaultUI: true
     }), []);
 
+    // Load the map using the API key
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     });
     
     useEffect(() => {
+        // Get all the locations from the entries in the view, then store in an array for markers on the map
         const pulledLocations = [];
         for (const entry of entriesArray){
             if (entry.useAPILocation && entry.APILocationLat && entry.APILocationLng){
@@ -32,43 +35,24 @@ const Map = (props) => {
             }
         }
         setLocationsArray(pulledLocations);
-
-        (pulledLocations && pulledLocations.length>0) ? setCenter(pulledLocations[0])
-        : navigator.geolocation.getCurrentPosition(position => {
-            setCenter({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            })
-      })
     
     }, [])
 
-    useEffect(() => {
-        const pulledLocations = [];
-        for (const entry of entriesArray){
-            if (entry.useAPILocation && entry.APILocationLat && entry.APILocationLng){
-                pulledLocations.push({lat: entry.APILocationLat, lng: entry.APILocationLng})
-            }
-        }
-        setLocationsArray(pulledLocations);
-    }, [entriesArray])
-
+    // Start rendering the markers when the map is loaded
     useEffect(() => {
       if (isLoaded){
         setRenderMarkers(true);
     }
     }, [isLoaded])
     
-
+    // Map settings sent in from the view editing page
     const onLoad = useCallback((map) => {
-        mapRef.current=map;
-        if(location.state.googleMapCenterLat && location.state.googleMapCenterLat.toString().length>0) {
-            mapRef.current.setCenter({lat: location.state.googleMapCenterLat, lng: location.state.googleMapCenterLng})
-            mapRef.current.setMapTypeId(location.state.googleMapTypeId)
-            mapRef.current.setZoom(location.state.googleMapZoom)
+        if(googleMapCenterLat && googleMapCenterLat.toString().length>0) {
+            map.setCenter({lat: googleMapCenterLat, lng: googleMapCenterLng})
+            map.setMapTypeId(googleMapTypeId)
+            map.setZoom(googleMapZoom)
         }
-    }, [mapRef])
-    const onUnMount = () => (mapRef.current=null)
+    }, [])
 
     if (!isLoaded) return <div>Loading...</div>
     
@@ -79,8 +63,8 @@ const Map = (props) => {
                 center={center}
                 mapContainerClassName="map-container"
                 options={options}
-                onLoad={onLoad}
-                onUnMount={onUnMount}>
+                onLoad={onLoad} >
+                {/*Render a marker for each location found in the entries array*/}
                 {renderMarkers && locationsArray && locationsArray.length>0 && 
                     locationsArray.map((location) => (location.lat && <Marker key={location.lat} position={location} />))}
             </GoogleMap>

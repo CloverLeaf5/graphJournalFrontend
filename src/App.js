@@ -22,6 +22,7 @@ import ViewCombineSearchPage from './pages/ViewCombineSearchPage';
 import ViewFilterSearchPage from './pages/ViewFilterSearchPage';
 import SavedViewPage from './pages/SavedViewPage';
 import SavedViewsListPage from './pages/SavedViewsListPage';
+import EntryViewerPage from './pages/EntryViewerPage';
 
 
 
@@ -50,6 +51,7 @@ function App() {
           <Route path="/viewFilter" element={ <ViewFilterSearchPage/> } />
           <Route path="/savedView" element={ <SavedViewPage/> } />
           <Route path="/savedViewsList" element={ <SavedViewsListPage/> } />
+          <Route path="/entryView" element={ <EntryViewerPage/> } />
         </Route>
       </Routes>
     </div>

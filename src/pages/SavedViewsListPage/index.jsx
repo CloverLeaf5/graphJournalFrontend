@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Table } from 'evergreen-ui';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const SavedViewsListPage = () => {
 
@@ -25,7 +25,7 @@ const SavedViewsListPage = () => {
                 }
                 setloading(false);
             } catch(err) {
-                // console.log("Something went wrong with getting the Entries");
+                console.log("Something went wrong with getting the Views");
                 console.log(err);
             }
         }
@@ -33,15 +33,35 @@ const SavedViewsListPage = () => {
     }, [])
 
 
-    const handleViewClick = (clickedIndex) => {
-        navigate("/savedView", {
-            state: {
-                title: savedViewsArray[clickedIndex].title,
-                details: savedViewsArray[clickedIndex].details,
-                entries: savedViewsArray[clickedIndex].entries,
-                viewType: savedViewsArray[clickedIndex].title.viewType
+    const handleViewClick = async (clickedIndex) => {
+        const viewEntries = savedViewsArray[clickedIndex].entries;
+        const response = await axios.post("http://localhost:5000/api/v1/view/populateViewEntries", {entryArray: viewEntries}, {withCredentials: true})
+        .catch((err) => {
+            console.log("There was an error populating the view");
+            console.log(err);
+        })
+        if (response && response.data){
+            const data = response.data;
+            for (const entry of data){
+                entry.startDate = entry.startDate.slice(0,10)
+                if (entry.endDate) entry.endDate = entry.endDate.slice(0,10)
             }
-        });
+            // Must keep the viewID in state so it will know to update this view if need be
+            navigate("/savedView", {
+                state: {
+                    title: savedViewsArray[clickedIndex].title,
+                    details: savedViewsArray[clickedIndex].details,
+                    entriesArray: response.data,
+                    viewType: savedViewsArray[clickedIndex].viewType,
+                    useGoogleMap: savedViewsArray[clickedIndex].useGoogleMap,
+                    googleMapCenterLat: savedViewsArray[clickedIndex].googleMapCenterLat,
+                    googleMapCenterLng: savedViewsArray[clickedIndex].googleMapCenterLng,
+                    googleMapZoom: savedViewsArray[clickedIndex].googleMapZoom,
+                    googleMapTypeId: savedViewsArray[clickedIndex].googleMapTypeId,
+                    viewId: savedViewsArray[clickedIndex]._id
+                }
+            });
+        }
     }
 
 
@@ -70,6 +90,7 @@ const SavedViewsListPage = () => {
                     </Table.Row>
                 )}
             </Table.Body>
+            <Link to="/dashboard">Go Back</Link>
         </div>
 
     )

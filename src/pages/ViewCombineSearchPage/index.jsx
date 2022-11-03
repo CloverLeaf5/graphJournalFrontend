@@ -98,19 +98,37 @@ const ViewCombineSearchPage = () => {
                         currentEntries.push(entry)
                     }
                 }
-                navigate("/viewEdit", {
-                    state: {
-                        entriesArray: currentEntries,
-                        title: location.state.title,
-                        details: location.state.details,
-                        viewType: location.state.viewType,
-                        useGoogleMap: location.state.useGoogleMap,
-                        googleMapCenterLat: location.state.googleMapCenterLat,
-                        googleMapCenterLng: location.state.googleMapCenterLng,
-                        googleMapZoom: location.state.googleMapZoom,
-                        googleMapTypeId: location.state.googleMapTypeId
-                    }
-                })
+                // Must keep the viewID in state if this is a view to update
+                if (location.state.viewId) {
+                    navigate("/viewEdit", {
+                        state: {
+                            entriesArray: currentEntries,
+                            title: location.state.title,
+                            details: location.state.details,
+                            viewType: location.state.viewType,
+                            useGoogleMap: location.state.useGoogleMap,
+                            googleMapCenterLat: location.state.googleMapCenterLat,
+                            googleMapCenterLng: location.state.googleMapCenterLng,
+                            googleMapZoom: location.state.googleMapZoom,
+                            googleMapTypeId: location.state.googleMapTypeId,
+                            viewId: location.state.viewId
+                        }
+                    })
+                } else {
+                    navigate("/viewEdit", {
+                        state: {
+                            entriesArray: currentEntries,
+                            title: location.state.title,
+                            details: location.state.details,
+                            viewType: location.state.viewType,
+                            useGoogleMap: location.state.useGoogleMap,
+                            googleMapCenterLat: location.state.googleMapCenterLat,
+                            googleMapCenterLng: location.state.googleMapCenterLng,
+                            googleMapZoom: location.state.googleMapZoom,
+                            googleMapTypeId: location.state.googleMapTypeId
+                        }
+                    })
+                }
             }
         } catch(err) {
             console.log("Something went wrong with getting the posting the data");

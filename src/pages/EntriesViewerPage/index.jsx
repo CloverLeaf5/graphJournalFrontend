@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Table } from 'evergreen-ui';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const EntriesViewerPage = () => {
 
@@ -58,7 +58,7 @@ const EntriesViewerPage = () => {
                             {entry.startDate}
                         </Table.TextCell>
                         <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
-                            {entry.type}
+                            {entry.typeText}
                         </Table.TextCell>
                         <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
                             {entry.title}
@@ -66,6 +66,7 @@ const EntriesViewerPage = () => {
                     </Table.Row>
                 )}
             </Table.Body>
+            <Link to="/dashboard">Go Home</Link>
         </div>
 
     )

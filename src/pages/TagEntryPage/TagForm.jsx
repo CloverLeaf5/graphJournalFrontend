@@ -9,8 +9,6 @@ const postData = async (body) => {
     .catch((err) => {
         console.log("Something went wrong with tag creation");
     });
-
-    console.log("Response: ", response);
 }
 
 

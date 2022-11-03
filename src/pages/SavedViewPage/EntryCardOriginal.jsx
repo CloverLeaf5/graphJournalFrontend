@@ -40,7 +40,7 @@ const EntryCardOriginal = (props) => {
                         setImageSource(response.data);
                     }
                 }catch (err) {
-                    console.log("Something went wrong with getting picture(s) from AWS S3");
+                    console.log("Something went wrong with group creation");
                     console.log(err);
                 }
             } else {
@@ -60,7 +60,7 @@ const EntryCardOriginal = (props) => {
         <div onClick={()=>props.whenClicked()}>
             {imgDims.height>=imgDims.width ? <CardLayout>
             <div className="first-column" style={{padding: "5px 5px 10px 5px"}}>
-                <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "200px"} : {height: "100px"}} alt="Image representing this entry"></img>
+                <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "200px"} : {height: "100px"}}></img>
             </div>
             <div className="second-column" style={{padding: "5px 10px 5px 5px"}}>
                 <h4>{props.entry.startDate}</h4>
@@ -70,7 +70,7 @@ const EntryCardOriginal = (props) => {
         </CardLayout>
         : <CardLayout>
             <div className="first-column" style={{padding: "5px 5px 5px 5px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <img onLoad={onImgLoad} src={imageSource} style={{width: "200px"}} alt="Image representing this entry"></img>
+                <img onLoad={onImgLoad} src={imageSource} style={{width: "200px"}}></img>
                 <h4>{props.entry.startDate}</h4>
             </div>
             <div className="second-column" style={{padding: "5px 5px 5px 5px"}}>

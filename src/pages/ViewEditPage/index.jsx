@@ -28,35 +28,110 @@ const ViewEditPage = () => {
     
 
     const handleCombineClick = () => {
-        navigate("/viewCombine", {
-            state: {
-                title: title,
-                details: details,
-                entriesArray: entriesArray,
-                viewType: viewType,
-                useGoogleMap: useMap,
-                googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
-                googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
-                googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
-                googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewCombine", {
+                state: {
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewCombine", {
+                state: {
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
+                }
+            })
+        }
     }
 
     const handleFilterClick = () => {
-        navigate("/viewFilter", {
-            state: {
-                title: title,
-                details: details,
-                entriesArray: entriesArray,
-                viewType: viewType,
-                useGoogleMap: useMap,
-                googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
-                googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
-                googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
-                googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
-            }
-        })
+        // Must keep the viewID in state if this is a view to update
+        if (location.state.viewId) {
+            navigate("/viewFilter", {
+                state: {
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                    viewId: location.state.viewId
+                }
+            })
+        } else {
+            navigate("/viewFilter", {
+                state: {
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
+                }
+            })
+        }
+    }
+
+    const viewEntryAtClickedIndex = (close) => {
+        // Must keep the viewID in state if this is a view to update
+        close();
+        if (location.state.viewId) {
+            navigate("/entryView", {
+                state: {
+                    currentEntry: entriesArray[clickedIndex],
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                    viewId: location.state.viewId,
+                    whereFrom: "/viewEdit"
+                }
+            });
+        } else {
+            navigate("/entryView", {
+                state: {
+                    currentEntry: entriesArray[clickedIndex],
+                    title: title,
+                    details: details,
+                    entriesArray: entriesArray,
+                    viewType: viewType,
+                    useGoogleMap: useMap,
+                    googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                    googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                    googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                    googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                    whereFrom: "/viewEdit"
+                }
+            });
+        }
     }
 
     const removeClickedIndex = (close) => {
@@ -64,16 +139,11 @@ const ViewEditPage = () => {
         copiedArray.splice(clickedIndex,1);
         setEntriesArray(copiedArray);
         close();
-        console.log(mapRef.current?.getCenter().lat())
-        console.log(mapRef.current?.getCenter().lng())
-        console.log(mapRef.current?.getZoom())
-        console.log(mapRef.current?.getMapTypeId())
-        console.log(useMap)
     }
 
     const saveView = async () => {
         const entryIDs = entriesArray.map((entry)=>entry._id);
-        const body = {
+        let body = {
             title: title,
             details: details,
             entries: entryIDs,
@@ -90,27 +160,59 @@ const ViewEditPage = () => {
         }
         else
             setMissingData(false);
-        try{
-            const response = await axios.post("http://localhost:5000/api/v1/view/saveView", body, { withCredentials: true })
-            if (response && response.data) {
-                navigate("/savedView", {
-                    state: {
-                        title: title,
-                        details: details,
-                        entries: entriesArray,
-                        viewType: viewType,
-                        useGoogleMap: useMap,
-                        googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
-                        googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
-                        googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
-                        googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : ""
-                    }
-                });
+        console.log(location.state);
+        if (location.state.viewId) {   // Then update current view (will have viewId if coming from savedView, not if new)
+            body.viewId = location.state.viewId;
+            try{
+                const response = await axios.post("http://localhost:5000/api/v1/view/updateView", body, { withCredentials: true })
+                if (response && response.data) {
+                    // Must keep the viewID in state if this is a view to update
+                    navigate("/savedView", {
+                        state: {
+                            title: title,
+                            details: details,
+                            entriesArray: entriesArray,
+                            viewType: viewType,
+                            useGoogleMap: useMap,
+                            googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                            googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                            googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                            googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                            viewId: response.data._id
+                        }
+                    });
+                }
+                
+            } catch (err) {
+                console.log("Something went wrong with group creation");
+                console.log(err);
             }
-            
-        } catch (err) {
-            console.log("Something went wrong with group creation");
-            console.log(err);
+
+        } else {  // No viewId means that this is a new view
+            try{
+                const response = await axios.post("http://localhost:5000/api/v1/view/saveView", body, { withCredentials: true })
+                if (response && response.data) {
+                    // Must keep the viewID in state if this is a view to update
+                    navigate("/savedView", {
+                        state: {
+                            title: title,
+                            details: details,
+                            entriesArray: entriesArray,
+                            viewType: viewType,
+                            useGoogleMap: useMap,
+                            googleMapCenterLat: useMap ? mapRef.current?.getCenter().lat() : "",
+                            googleMapCenterLng: useMap ? mapRef.current?.getCenter().lng() : "",
+                            googleMapZoom: useMap ? mapRef.current?.getZoom() : "",
+                            googleMapTypeId: useMap ? mapRef.current?.getMapTypeId() : "",
+                            viewId: response.data._id
+                        }
+                    });
+                }
+                
+            } catch (err) {
+                console.log("Something went wrong with group creation");
+                console.log(err);
+            }
         }
         
     }
@@ -148,6 +250,7 @@ const ViewEditPage = () => {
                     {entriesArray.map((entry, idx) => 
                         <Popover key={idx} content={({ close }) => (
                             <BasicLayout>
+                                <Button onClick={()=>viewEntryAtClickedIndex(close)}>View Entry</Button>
                                 <Button onClick={()=>removeClickedIndex(close)}>Remove from View</Button>
                                 <Button onClick={close}>Cancel</Button>
                             </BasicLayout>
@@ -157,7 +260,7 @@ const ViewEditPage = () => {
                                     {entry.startDate}
                                 </Table.TextCell>
                                 <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
-                                    {entry.type}
+                                    {entry.typeText}
                                 </Table.TextCell>
                                 <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
                                     {entry.title}
@@ -173,6 +276,7 @@ const ViewEditPage = () => {
                 {entriesArray.map((entry, idx) => 
                     <Popover key={idx} content={({ close }) => (
                         <BasicLayout>
+                            <Button onClick={()=>viewEntryAtClickedIndex(close)}>View Entry</Button>
                             <Button onClick={()=>removeClickedIndex(close)}>Remove from View</Button>
                             <Button onClick={close}>Cancel</Button>
                         </BasicLayout>
