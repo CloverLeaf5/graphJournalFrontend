@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Button, Dialog, Pane, Popover, Select, Table, TextInput } from 'evergreen-ui';
+import { Button, Dialog, Pane, Popover, Table } from 'evergreen-ui';
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -17,14 +17,17 @@ const SavedViewPage = () => {
     const CELL_WIDTH = 300;
 
     const location = useLocation();
-    const [entriesArray, setEntriesArray] = useState(location.state.entriesArray);
-    const [title, setTitle] = useState(location.state.title);
-    const [details, setDetails] = useState(location.state.details);
-    const [viewType, setViewType] = useState(location.state.viewType);
-    const [useMap, setUseMap] = useState(location.state.useGoogleMap);
+    const [entriesArray, setEntriesArray] = useState(location.state.entriesArray); // The actual entries in the view
+    const [entryDisplayTypes, setEntryDisplayTypes] = useState(location.state.entryDisplayTypes) // How each entry is displayed in traditional mode
+    const [title, setTitle] = useState(location.state.title); // Title of the view
+    const [details, setDetails] = useState(location.state.details); // Quill details
+    const [viewType, setViewType] = useState(location.state.viewType); // How the entries are displayed
+    const [useMap, setUseMap] = useState(location.state.useGoogleMap); // The Google Map
+    const [mostRecentFirst, setMostRecentFirst] = useState(location.state.mostRecentFirst); // The chronological order of displayed entries
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 
+    // Open the single entry viewer page. Send in the relevant state
     const viewEntryAtClickedIndex = (close) => {
         close();
         navigate("/entryView", {
@@ -33,31 +36,36 @@ const SavedViewPage = () => {
                 title: title,
                 details: details,
                 entriesArray: entriesArray,
+                entryDisplayTypes: entryDisplayTypes,
                 viewType: viewType,
                 useGoogleMap: useMap,
                 googleMapCenterLat: location.state.googleMapCenterLat,
                 googleMapCenterLng: location.state.googleMapCenterLng,
                 googleMapZoom: location.state.googleMapZoom,
                 googleMapTypeId: location.state.googleMapTypeId,
+                mostRecentFirst: mostRecentFirst,
                 viewId: location.state.viewId,
-                whereFrom: "/savedView"
+                whereFrom: "/savedView" // So that the page knows to return to the saved view page
             }
         });
     }
 
 
+    // Open the view editor page. Send in the relevant state
     const handleEditView = () => {
         navigate("/viewEdit", {
             state: {
-                title: location.state.title,
-                details: location.state.details,
-                entriesArray: location.state.entriesArray,
-                viewType: location.state.viewType,
-                useGoogleMap: location.state.useGoogleMap,
+                title: title,
+                details: details,
+                entriesArray: entriesArray,
+                entryDisplayTypes: entryDisplayTypes,
+                viewType: viewType,
+                useGoogleMap: useMap,
                 googleMapCenterLat: location.state.googleMapCenterLat,
                 googleMapCenterLng: location.state.googleMapCenterLng,
                 googleMapZoom: location.state.googleMapZoom,
                 googleMapTypeId: location.state.googleMapTypeId,
+                mostRecentFirst: mostRecentFirst,
                 viewId: location.state.viewId
             }
         });
@@ -120,7 +128,7 @@ const SavedViewPage = () => {
                         </BasicLayout>
                         )}>
                         <Pane style={{width:'max-content'}}>
-                            <EntryCardOriginal entry={entry} entriesArray={entriesArray} whenClicked={()=>{clickedIndex=idx}} />
+                        {entryDisplayTypes[idx] === "default" && <EntryCardOriginal entry={entry} entriesArray={entriesArray} whenClicked={()=>{clickedIndex=idx}} />}
                         </Pane>
                     </Popover>
                 )}

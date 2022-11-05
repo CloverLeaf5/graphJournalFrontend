@@ -9,11 +9,13 @@ const TABLE_WIDTH = 300;
 
 const ViewCreationPage = () => {
 
+    // All tags, types, people, and groups from the database
     const [entryTypesArray, setEntryTypesArray] = useState([])
     const [tagsArray, setTagsArray] = useState([])
     const [peopleArray, setPeopleArray] = useState([])
     const [groupsArray, setGroupsArray] = useState([])
 
+    // To hold the criteria that the user inputs
     const [entryType, setEntryType] = useState("nothing")
     const [selectedEntryTags, setSelectedEntryTags] = useState([])
     const [selectedEntryPeople, setSelectedEntryPeople] = useState([])
@@ -29,6 +31,7 @@ const ViewCreationPage = () => {
     
 
     useEffect(() => {
+        // Get types, tags, people, and groups to allow the user to search based on these
         async function fetchData () {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/entry/getEntryTypesWithText", { withCredentials: true })
@@ -69,6 +72,7 @@ const ViewCreationPage = () => {
     }, [])
 
     const handleSubmit = async () => {
+        // Create a body object to send input search criteria to the backend
         const body = {
             type: entryType,
             tags: selectedEntryTags,
@@ -81,20 +85,29 @@ const ViewCreationPage = () => {
         }
 
         try {
+            // Get the entries that match the search criteria
             const response = await axios.post("http://localhost:5000/api/v1/view/findEntries", body, { withCredentials: true })
             if (response && response.data){
+                // Format the dates for display
+                // The default order should be most recent first
+                // Create an array of "default" to denote the default card display for traditional view
                 const data = response.data;
+                let entryDisplayTypes = [];
                 for (const entry of data){
+                    entryDisplayTypes.push("default");
                     entry.startDate = entry.startDate.slice(0,10)
                     if (entry.endDate) entry.endDate = entry.endDate.slice(0,10)
                 }
+                // Set all of this as the state and navigate to a view editor
                 navigate("/viewEdit", {
                     state: {
                         entriesArray: data,
+                        entryDisplayTypes: entryDisplayTypes,
                         title: "",
                         details: "",
                         viewType: "table",
-                        useMap: "true"
+                        useMap: "true",
+                        mostRecentFirst: "true"
                     }
                 })
             }
@@ -103,6 +116,7 @@ const ViewCreationPage = () => {
         }
     }
 
+    // FUNCTIONS TO HANDLE INTERACTIONS WITH THE UI AND UPDATE STATE
     const handleEntryTypeChange = (selection) => {
         const typeObject = entryTypesArray.find((obj) => {
             return obj.text === selection;

@@ -1,20 +1,23 @@
 import axios from 'axios'
 import { Button, Combobox, Select } from 'evergreen-ui'
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BasicLayout from '../../layouts/BasicLayout'
 
 const ViewFilterSearchPage = () => {
 
     const location = useLocation();
     const currentEntries = location.state.entriesArray
+    const currentEntryDisplayTypes = location.state.entryDisplayTypes
 
+    // All tags, types, people, and groups from the database
     const [filterType, setFilterType] = useState("nothing")
     const [entryTypesArray, setEntryTypesArray] = useState([])
     const [tagsArray, setTagsArray] = useState([])
     const [peopleArray, setPeopleArray] = useState([])
     const [groupsArray, setGroupsArray] = useState([])
 
+    // To hold the selections that the user inputs
     const [entryType, setEntryType] = useState("nothing")
     const [selectedTag, setSelectedTag] = useState("")
     const [selectedPerson, setSelectedPerson] = useState("")
@@ -24,6 +27,7 @@ const ViewFilterSearchPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Get types, tags, people, and groups to allow the user to search based on these
         async function fetchData () {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/entry/getEntryTypesWithText", { withCredentials: true })
@@ -63,7 +67,7 @@ const ViewFilterSearchPage = () => {
         fetchData();
     }, [])
 
-    ///TYPE
+    // Handle interaction with the type selection combobox
     const handleEntryTypeChange = (selection) => {
         const typeObject = entryTypesArray.find((obj) => {
             return obj.text === selection;
@@ -74,15 +78,25 @@ const ViewFilterSearchPage = () => {
             setEntryType("nothing")
     }
 
+    ///TYPE
     const filterByType = () => {
-        const filteredEntries = currentEntries.filter((entry) =>{
-            return entry.type !== entryType
+        let newEntryDisplayTypes = []
+        const filteredEntries = currentEntries.filter((entry, idx) =>{
+            // Filter out any entries that have the selected entry type
+            if (entry.type === entryType)
+                    return false;
+            else {
+                newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                return true;
+            }
         })
+        // GO BACK TO THE VIEW EDIT, SEND THE NECESSARY STATE
         // Must keep the viewID in state if this is a view to update
         if (location.state.viewId) {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -91,6 +105,7 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
                     googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst,
                     viewId: location.state.viewId
                 }
             })
@@ -98,6 +113,7 @@ const ViewFilterSearchPage = () => {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -105,7 +121,8 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
-                    googleMapTypeId: location.state.googleMapTypeId
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst
                 }
             })
         }
@@ -114,16 +131,30 @@ const ViewFilterSearchPage = () => {
 
     ///TAG
     const filterByTag = () => {
-        const filteredEntries = currentEntries.filter((entry) =>{
+        // Filter on the entries array but update the display type array in tandem
+        let newEntryDisplayTypes = []
+        const filteredEntries = currentEntries.filter((entry, idx) =>{
             const currentTags = entry.tags.map((tag)=>tag.title)
-            if (currentTags.length===0) return true;
-            else return !currentTags.includes(selectedTag)
+            if (currentTags.length===0){  // Current entry doesn't have any tags, so no need to filter
+                newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                return true;
+            }
+            else {  // Filter out the entries that have the tag
+                if (currentTags.includes(selectedTag))
+                    return false;
+                else {
+                    newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                    return true;
+                }
+            } 
         })
+        // GO BACK TO THE VIEW EDIT, SEND THE NECESSARY STATE
         // Must keep the viewID in state if this is a view to update
         if (location.state.viewId) {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -132,6 +163,7 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
                     googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst,
                     viewId: location.state.viewId
                 }
             })
@@ -139,6 +171,7 @@ const ViewFilterSearchPage = () => {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -146,7 +179,8 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
-                    googleMapTypeId: location.state.googleMapTypeId
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst
                 }
             })
         }
@@ -154,16 +188,30 @@ const ViewFilterSearchPage = () => {
 
     ///PERSON
     const filterByPerson = () => {
-        const filteredEntries = currentEntries.filter((entry) =>{
+        // Filter on the entries array but update the display type array in tandem
+        let newEntryDisplayTypes = []
+        const filteredEntries = currentEntries.filter((entry, idx) =>{
             const currentPeople = entry.people.map((person)=>person.title)
-            if (currentPeople.length===0) return true;
-            else return !currentPeople.includes(selectedPerson)
+            if (currentPeople.length===0){   // Current entry doesn't have any people, so no need to filter
+                newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                return true;
+            }
+            else {  // Filter out the entries that have the person
+                if (currentPeople.includes(selectedPerson))
+                    return false;
+                else {
+                    newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                    return true;
+                }
+            } 
         })
+        // GO BACK TO THE VIEW EDIT, SEND THE NECESSARY STATE
         // Must keep the viewID in state if this is a view to update
         if (location.state.viewId) {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -172,6 +220,7 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
                     googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst,
                     viewId: location.state.viewId
                 }
             })
@@ -179,6 +228,7 @@ const ViewFilterSearchPage = () => {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -186,7 +236,8 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
-                    googleMapTypeId: location.state.googleMapTypeId
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst
                 }
             })
         }
@@ -194,16 +245,30 @@ const ViewFilterSearchPage = () => {
 
     ///GROUP
     const filterByGroup = () => {
-        const filteredEntries = currentEntries.filter((entry) =>{
+        // Filter on the entries array but update the display type array in tandem
+        let newEntryDisplayTypes = []
+        const filteredEntries = currentEntries.filter((entry, idx) =>{
             const currentGroups = entry.groups.map((group)=>group.title)
-            if (currentGroups.length===0) return true;
-            else return !currentGroups.includes(selectedGroup)
+            if (currentGroups.length===0){   // Current entry doesn't have any groups, so no need to filter
+                newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                return true;
+            }
+            else {  // Filter out the entries that have the group
+                if (currentGroups.includes(selectedGroup))
+                    return false;
+                else {
+                    newEntryDisplayTypes.push(currentEntryDisplayTypes[idx]);
+                    return true;
+                }
+            }
         })
+        // GO BACK TO THE VIEW EDIT, SEND THE NECESSARY STATE
         // Must keep the viewID in state if this is a view to update
         if (location.state.viewId) {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -212,6 +277,7 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
                     googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst,
                     viewId: location.state.viewId
                 }
             })
@@ -219,6 +285,7 @@ const ViewFilterSearchPage = () => {
             navigate("/viewEdit", {
                 state: {
                     entriesArray: filteredEntries,
+                    entryDisplayTypes: newEntryDisplayTypes,
                     title: location.state.title,
                     details: location.state.details,
                     viewType: location.state.viewType,
@@ -226,7 +293,8 @@ const ViewFilterSearchPage = () => {
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
-                    googleMapTypeId: location.state.googleMapTypeId
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst
                 }
             })
         }

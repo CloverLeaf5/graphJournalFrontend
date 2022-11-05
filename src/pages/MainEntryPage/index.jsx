@@ -121,7 +121,7 @@ const MainEntryPage = () => {
             rating: formFields.rating,
             isStarred: booleans.isStarred,
             isAchievement: booleans.isAchievement,
-            approxTime: formFields.time,
+            approxTime: formFields.time.length>0 ? formFields.time : "0",
             metrics: metricsArray,
             pictures: pictureFields
         }

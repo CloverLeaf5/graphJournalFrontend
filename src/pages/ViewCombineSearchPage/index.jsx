@@ -11,12 +11,15 @@ const ViewCombineSearchPage = () => {
 
     const location = useLocation();
     const currentEntries = location.state.entriesArray
+    const currentEntryDisplayTypes = location.state.entryDisplayTypes
 
+    // All tags, types, people, and groups from the database
     const [entryTypesArray, setEntryTypesArray] = useState([])
     const [tagsArray, setTagsArray] = useState([])
     const [peopleArray, setPeopleArray] = useState([])
     const [groupsArray, setGroupsArray] = useState([])
 
+    // To hold the criteria that the user inputs
     const [entryType, setEntryType] = useState("nothing")
     const [selectedEntryTags, setSelectedEntryTags] = useState([])
     const [selectedEntryPeople, setSelectedEntryPeople] = useState([])
@@ -31,6 +34,7 @@ const ViewCombineSearchPage = () => {
     
 
     useEffect(() => {
+        // Get types, tags, people, and groups to allow the user to search based on these
         async function fetchData () {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/entry/getEntryTypesWithText", { withCredentials: true })
@@ -71,6 +75,7 @@ const ViewCombineSearchPage = () => {
     }, [])
 
     const handleSubmit = async () => {
+        // Create a body object to send input search criteria to the backend
         const body = {
             type: entryType,
             tags: selectedEntryTags,
@@ -91,18 +96,40 @@ const ViewCombineSearchPage = () => {
                     entry.startDate = entry.startDate.slice(0,10)
                     if (entry.endDate) entry.endDate = entry.endDate.slice(0,10)
                 }
-                // Only add new ones to the array
+                // Only add new ones to the array. Also add a new default display type
                 const currentEntriesIDs = currentEntries.map((entry) => (entry._id))
                 for (const entry of foundEntries){
                     if (!currentEntriesIDs.includes(entry._id)){
                         currentEntries.push(entry)
+                        currentEntryDisplayTypes.push("default")
                     }
                 }
+                // SORT BOTH ARRAYS IN TANDEM https://stackoverflow.com/questions/11499268/sort-two-arrays-the-same-way
+                //1) combine the arrays:
+                let list = [];
+                for (let i=0; i<currentEntries.length; i++) 
+                    list.push({'entry': currentEntries[i], 'display': currentEntryDisplayTypes[i]});
+                //2) sort:
+                list.sort(function(a, b) {
+                    return (
+                        (Number(b.entry.startDate.slice(0,4)) - Number(a.entry.startDate.slice(0,4))) || // Check year
+                        (Number(b.entry.startDate.slice(5,7)) - Number(a.entry.startDate.slice(5,7))) || // Check month
+                        (Number(b.entry.startDate.slice(8,10)) - Number(a.entry.startDate.slice(8,10))) || // Check date
+                        (Number(b.entry.approxTime) - Number(a.entry.approxTime)) // Check time
+                    )
+                });
+                //3) separate them back out:
+                for (let i=0; i<list.length; i++) {
+                    currentEntries[i] = list[i].entry;
+                    currentEntryDisplayTypes[i] = list[i].display;
+                }
+                // GO BACK TO THE VIEW EDIT, SEND THE NECESSARY STATE
                 // Must keep the viewID in state if this is a view to update
                 if (location.state.viewId) {
                     navigate("/viewEdit", {
                         state: {
                             entriesArray: currentEntries,
+                            entryDisplayTypes: currentEntryDisplayTypes,
                             title: location.state.title,
                             details: location.state.details,
                             viewType: location.state.viewType,
@@ -111,6 +138,7 @@ const ViewCombineSearchPage = () => {
                             googleMapCenterLng: location.state.googleMapCenterLng,
                             googleMapZoom: location.state.googleMapZoom,
                             googleMapTypeId: location.state.googleMapTypeId,
+                            mostRecentFirst: location.state.mostRecentFirst,
                             viewId: location.state.viewId
                         }
                     })
@@ -118,6 +146,7 @@ const ViewCombineSearchPage = () => {
                     navigate("/viewEdit", {
                         state: {
                             entriesArray: currentEntries,
+                            entryDisplayTypes: currentEntryDisplayTypes,
                             title: location.state.title,
                             details: location.state.details,
                             viewType: location.state.viewType,
@@ -125,7 +154,8 @@ const ViewCombineSearchPage = () => {
                             googleMapCenterLat: location.state.googleMapCenterLat,
                             googleMapCenterLng: location.state.googleMapCenterLng,
                             googleMapZoom: location.state.googleMapZoom,
-                            googleMapTypeId: location.state.googleMapTypeId
+                            googleMapTypeId: location.state.googleMapTypeId,
+                            mostRecentFirst: location.state.mostRecentFirst
                         }
                     })
                 }
@@ -135,6 +165,7 @@ const ViewCombineSearchPage = () => {
         }
     }
 
+    // HANDLE INTERACTIONS WITH THE UI
     const handleEntryTypeChange = (selection) => {
         const typeObject = entryTypesArray.find((obj) => {
             return obj.text === selection;

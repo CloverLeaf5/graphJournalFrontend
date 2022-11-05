@@ -13,6 +13,7 @@ const SavedViewsListPage = () => {
     const CELL_WIDTH = 300;
 
     useEffect(() => {
+        // Get all of the saved views from the database
         async function fetchData () {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/view/getSavedViews", { withCredentials: true })
@@ -33,6 +34,7 @@ const SavedViewsListPage = () => {
     }, [])
 
 
+    // Populate the data in the entries from the saved view, put it in state and navigate to the saved view page
     const handleViewClick = async (clickedIndex) => {
         const viewEntries = savedViewsArray[clickedIndex].entries;
         const response = await axios.post("http://localhost:5000/api/v1/view/populateViewEntries", {entryArray: viewEntries}, {withCredentials: true})
@@ -52,12 +54,14 @@ const SavedViewsListPage = () => {
                     title: savedViewsArray[clickedIndex].title,
                     details: savedViewsArray[clickedIndex].details,
                     entriesArray: response.data,
+                    entryDisplayTypes: savedViewsArray[clickedIndex].entryDisplayTypes,
                     viewType: savedViewsArray[clickedIndex].viewType,
                     useGoogleMap: savedViewsArray[clickedIndex].useGoogleMap,
                     googleMapCenterLat: savedViewsArray[clickedIndex].googleMapCenterLat,
                     googleMapCenterLng: savedViewsArray[clickedIndex].googleMapCenterLng,
                     googleMapZoom: savedViewsArray[clickedIndex].googleMapZoom,
                     googleMapTypeId: savedViewsArray[clickedIndex].googleMapTypeId,
+                    mostRecentFirst: savedViewsArray[clickedIndex].mostRecentFirst,
                     viewId: savedViewsArray[clickedIndex]._id
                 }
             });
