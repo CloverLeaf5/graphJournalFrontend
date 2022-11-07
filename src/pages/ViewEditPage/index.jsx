@@ -326,7 +326,7 @@ const ViewEditPage = () => {
                         </BasicLayout>
                         )}>
                         <Pane style={{width:'max-content'}}>
-                            {entryDisplayTypes[idx] === "default" && <EntryCardOriginal entry={entry} entriesArray={entriesArray} whenClicked={()=>{clickedIndex=idx}} />}
+                            {entryDisplayTypes[idx] === "default" && <EntryCardOriginal entry={entry} entriesArray={entriesArray} orderChange={mostRecentFirst} whenClicked={()=>{clickedIndex=idx}} />}
                         </Pane>
                     </Popover>
                 )}

@@ -13,22 +13,22 @@ const EntryDetailsForm = (props) => {
     ///////////////////////////////////////////////////////////////////////////////////
     // Eventually will conditionally render the form depending on the type.
     // Check if the type was accounted for, otherwise will need to render a default form
-    const knownTypes = [
-        "journalEntry", "thought", "otherNote", "movie", "show", 
-        "song", "album", "band", "book", "restaurant", "trip", 
-        "relationship", "friendship", "childhoodMilestones", "pet", 
-        "job", "residence", "school", "eventWedding", "eventSports", 
-        "eventConcert", "eventParty", "eventSomeoneElse", 
-        "achievementOrAward", "majorPurchase", "lifeEvent", "picture", 
-        "ticket", "financialAccount"
-    ];
+    // const knownTypes = [
+    //     "journalEntry", "thought", "otherNote", "movie", "show", 
+    //     "song", "album", "band", "book", "restaurant", "trip", 
+    //     "relationship", "friendship", "childhoodMilestones", "pet", 
+    //     "job", "residence", "school", "eventWedding", "eventSports", 
+    //     "eventConcert", "eventParty", "eventSomeoneElse", 
+    //     "achievementOrAward", "majorPurchase", "lifeEvent", "picture", 
+    //     "ticket", "financialAccount"
+    // ];
 
-    let unknownType = true;
-    let foundType = knownTypes.find((knownType) => {
-        return knownType === entryType;
-    });
+    // let unknownType = true;
+    // let foundType = knownTypes.find((knownType) => {
+    //     return knownType === entryType;
+    // });
 
-    if (foundType) unknownType = false;
+    // if (foundType) unknownType = false;
 
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -99,6 +99,12 @@ const EntryDetailsForm = (props) => {
                     value={formFields.endDate}
                     onChange={handleFormChange} />
             <TextInputField
+                    name='time'
+                    label='Approximate time in military time - only numbers are stored! Recommended and used for sorting'
+                    placeholder='####'
+                    value={formFields.time}
+                    onChange={handleFormChange} />
+            <TextInputField
                     name='title'
                     label='Title of Entry'
                     placeholder='Title'
@@ -134,12 +140,6 @@ const EntryDetailsForm = (props) => {
                             checked={props.booleans.isAchievement}
                             onChange={e=>props.setBooleans({...props.booleans, isAchievement: e.target.checked})} />
             </div>
-            <TextInputField
-                    name='time'
-                    label='Approximate time (if applicable) in military time - only numbers are stored!'
-                    placeholder='####'
-                    value={formFields.time}
-                    onChange={handleFormChange} />
             <label>Enter metrics that you would like to track across entries. Keep the name consistent!</label>
             {metricsArray.map((metric, idx) => 
                 <div key={idx}>

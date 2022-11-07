@@ -48,8 +48,8 @@ const EntryCardOriginal = (props) => {
             }
         }
         setImage()
-        setQuillArea(props.entry.details.slice(0,100));
-    }, [props.entriesArray])
+        setQuillArea(props.entry.details.slice(0,200));
+    }, [props.orderChange, props.entriesArray])
 
     const onImgLoad = ({target:img}) => {
         setImgDims({height:img.offsetHeight, width:img.offsetWidth});

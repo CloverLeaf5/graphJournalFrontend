@@ -54,12 +54,14 @@ const EntryViewerPage = () => {
                     title: location.state.title,
                     details: location.state.details,
                     entriesArray: location.state.entriesArray,
+                    entryDisplayTypes: location.state.entryDisplayTypes,
                     viewType: location.state.viewType,
                     useGoogleMap: location.state.useGoogleMap,
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
                     googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst,
                     viewId: location.state.viewId
                 }
             });
@@ -69,12 +71,14 @@ const EntryViewerPage = () => {
                     title: location.state.title,
                     details: location.state.details,
                     entriesArray: location.state.entriesArray,
+                    entryDisplayTypes: location.state.entryDisplayTypes,
                     viewType: location.state.viewType,
                     useGoogleMap: location.state.useGoogleMap,
                     googleMapCenterLat: location.state.googleMapCenterLat,
                     googleMapCenterLng: location.state.googleMapCenterLng,
                     googleMapZoom: location.state.googleMapZoom,
-                    googleMapTypeId: location.state.googleMapTypeId
+                    googleMapTypeId: location.state.googleMapTypeId,
+                    mostRecentFirst: location.state.mostRecentFirst
                 }
             });
         }

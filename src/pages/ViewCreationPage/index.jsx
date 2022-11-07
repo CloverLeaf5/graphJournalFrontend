@@ -105,9 +105,9 @@ const ViewCreationPage = () => {
                         entryDisplayTypes: entryDisplayTypes,
                         title: "",
                         details: "",
-                        viewType: "table",
-                        useMap: "true",
-                        mostRecentFirst: "true"
+                        viewType: "traditional",
+                        useMap: true,
+                        mostRecentFirst: true
                     }
                 })
             }
