@@ -4,8 +4,23 @@ import { Button, Combobox, Table, TextInputField } from 'evergreen-ui'
 import React, { useEffect, useState } from 'react'
 import BasicLayout from "../../layouts/BasicLayout"
 import TagPersonCard from "../MainEntryPage/TagPersonCard"
+import styled from 'styled-components';
 
 const TABLE_WIDTH = 300;
+
+const CardGrid = styled.div`
+width: 100%;
+height: auto;
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+grid-gap: 5px;
+text-align: center;
+font-size: 16px;
+border-style: solid;
+margin: 8px auto 8px 5px;
+cursor: pointer;
+`;
+
 
 const ViewCreationPage = () => {
 
@@ -25,6 +40,9 @@ const ViewCreationPage = () => {
     const [startDateEnd, setStartDateEnd] = useState("")
     const [endDateStart, setEndDateStart] = useState("")
     const [endDateEnd, setEndDateEnd] = useState("")
+
+    // Loading state after submitting request
+    const [loading, setLoading] = useState(false);
 
 
     const navigate = useNavigate();
@@ -83,6 +101,8 @@ const ViewCreationPage = () => {
             endDateStart: endDateStart,
             endDateEnd: endDateEnd
         }
+
+        setLoading(true);
 
         try {
             // Get the entries that match the search criteria
@@ -175,6 +195,8 @@ const ViewCreationPage = () => {
         })
     }
 
+    if (loading) return <div>Loading...</div>
+
     return (
         <BasicLayout>
             <h1>Create a Vew View</h1>
@@ -191,18 +213,24 @@ const ViewCreationPage = () => {
                     placeholder="Select Type"
                 />
             </div>
-            <div >
+            {tagsArray.length>0 && <div >
                 <h5>Select Tags:</h5>
-                {tagsArray.map((tag, idx) => <TagPersonCard title={tag.title} key={idx} handleClick={()=>handleClickTag(idx)} />)}
-            </div>
-            <div >
+                <CardGrid>
+                    {tagsArray.map((tag, idx) => <TagPersonCard title={tag.title} key={idx} handleClick={()=>handleClickTag(idx)} />)}
+                </CardGrid>
+            </div>}
+            {peopleArray.length>0 && <div >
                 <h5>Select People:</h5>
-                {peopleArray.map((person, idx) => <TagPersonCard title={person.title} key={idx} handleClick={()=>handleClickPerson(idx)} />)}
-            </div>
-            <div >
+                <CardGrid>
+                    {peopleArray.map((person, idx) => <TagPersonCard title={person.title} key={idx} handleClick={()=>handleClickPerson(idx)} />)}
+                </CardGrid>
+            </div>}
+            {groupsArray.length>0 && <div >
                 <h5>Select Groups:</h5>
-                {groupsArray.map((group, idx) => <TagPersonCard title={group.title} key={idx} handleClick={()=>handleClickGroup(idx)} />)}
-            </div>
+                <CardGrid>
+                    {groupsArray.map((group, idx) => <TagPersonCard title={group.title} key={idx} handleClick={()=>handleClickGroup(idx)} />)}
+                </CardGrid>
+            </div>}
 
             <div className="tag-person-tables">
                 <div className="tag-table">

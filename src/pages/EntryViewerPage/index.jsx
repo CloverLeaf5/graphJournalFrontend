@@ -18,6 +18,7 @@ const EntryViewerPage = () => {
     const [quillArea, setQuillArea] = useState("");
     const [imgDims, setImgDims] = useState({height:"100px",
                                             width:"100px"})
+    const [moreImages, setMoreImages] = useState([]);
 
     useEffect(() => {
         const setImage = async () => {
@@ -30,15 +31,39 @@ const EntryViewerPage = () => {
                     if (response && response.data){
                         setImageSource(response.data);
                     }
-                }catch (err) {
-                    console.log("Something went wrong with getting picture(s) from AWS S3");
+                } catch (err) {
+                    console.log("Something went wrong with getting the first picture from AWS S3");
                     console.log(err);
                 }
             } else {
                 setImageSource("journal.png")
             }
         }
-        setImage()
+        // If there are more pictures for this entry in AWS
+        const setOtherImages = async () => {
+            if (entry.whichImage===1 && entry.pictures.length>1){
+                // Get the image links for each one
+                let photoLinksArray = [];
+                try {
+                    entry.pictures.map(async (picture, idx) => {
+                        if (idx>0){ // We don't need to get the first picture again
+                            const response = await axios
+                                .post("http://localhost:5000/api/v1/entry/getAWSPhotoURL", {s3Key: picture.location}, { withCredentials: true })
+                            if (response && response.data){
+                                photoLinksArray.push(response.data);
+                            }
+                        }
+                    })
+                    setMoreImages(photoLinksArray);
+                } catch (err) {
+                    console.log("Something went wrong with getting the rest of the pictures from AWS S3");
+                    console.log(err);
+                }
+            }
+        }
+
+        setImage();
+        setOtherImages();
         if (entry.details) setQuillArea(entry.details);
     }, [])
 
@@ -89,7 +114,7 @@ const EntryViewerPage = () => {
     return (
         <div className='entry-div'>
             {imgDims.height>=imgDims.width ? <div>
-                <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "300px"} : {height: "150px"}}></img>
+                <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "300px"} : {height: "150px"}} alt="Main photo for this entry"></img>
                 <h4>{entry.startDate}</h4>
                 {entry.endDate && entry.endDate.length>0 && <h4>End Date: {entry.endDate}</h4>}
                 <h4>Type: {entry.typeText}</h4>
@@ -150,13 +175,19 @@ const EntryViewerPage = () => {
                         <h6>{metric.data}</h6>
                     </div>
                 )}
+                {moreImages.length>0 && <h5>Other Pictures:</h5>}
+                {moreImages.map((imageLink, idx) => 
+                    <div key={idx}>
+                        <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
+                    </div>
+                )}
                 {entry.useAPILocation && entry.APILocationString && <h4>{entry.APILocationString}</h4>}
                 {entry.useAPILocation && <Map entry={entry} />}
             </div>
 
 
             : <div>
-                <img onLoad={onImgLoad} src={imageSource} style={{width: "300px"}}></img>
+                <img onLoad={onImgLoad} src={imageSource} style={{width: "300px"}} alt="Main photo for this entry"></img>
                 <h4>{entry.startDate}</h4>
                 {entry.endDate && entry.endDate.length>0 && <h4>End Date: {entry.endDate}</h4>}
                 <h2>{entry.title}</h2>
@@ -214,6 +245,12 @@ const EntryViewerPage = () => {
                     <div key={idx}>
                         <label>{metric.name}</label>
                         <h6>{metric.data}</h6>
+                    </div>
+                )}
+                {moreImages.length>0 && <h5>Other Pictures:</h5>}
+                {moreImages.map((imageLink, idx) => 
+                    <div key={idx}>
+                        <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
                     </div>
                 )}
                 {entry.useAPILocation && entry.APILocationString && <h4>{entry.APILocationString}</h4>}
