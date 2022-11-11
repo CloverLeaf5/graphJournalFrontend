@@ -84,6 +84,8 @@ const GroupEntryPage = () => {
         .then(() => {
             setSelectedPeople([]);
             setGroupName("");
+            setGroupDetails("");
+            setGroupPicture("");
         });
     }
     

@@ -63,6 +63,9 @@ const EntryCardOriginal = (props) => {
                 <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "200px"} : {height: "100px"}} alt="Image representing this entry"></img>
             </div>
             <div className="second-column" style={{padding: "5px 10px 5px 5px"}}>
+                {props.entry.pictures.length>1 && 
+                    <p style={{textAlign: "right", fontSize: "10px"}}>More Pictures inside <img src="more_pix.png" alt="Polaroids icon" style={{maxHeight: "20px"}}></img></p>
+                }
                 <h4>{props.entry.startDate}</h4>
                 <h3>{props.entry.title}</h3>
                 <ReactQuill theme="bubble" value={quillArea} readOnly={true} />
@@ -74,6 +77,9 @@ const EntryCardOriginal = (props) => {
                 <h4>{props.entry.startDate}</h4>
             </div>
             <div className="second-column" style={{padding: "5px 5px 5px 5px"}}>
+                {props.entry.pictures.length>1 && 
+                    <p style={{textAlign: "right", fontSize: "10px"}}>More Pictures inside <img src="more_pix.png" alt="Polaroids icon" style={{maxHeight: "20px"}}></img></p>
+                }
                 <h3>{props.entry.title}</h3>
                 <ReactQuill theme="bubble" value={quillArea} readOnly={true} />
             </div>

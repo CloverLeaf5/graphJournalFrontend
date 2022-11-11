@@ -33,7 +33,11 @@ const TagForm = () => {
     const submitForm = (e) => {
         e.preventDefault();
         postData({title: tagName, details: tagDetails, picture: tagPicture})
-        .then(() => setTagName(""));
+        .then(() => {
+            setTagName("");
+            setTagDetails("");
+            setTagPicture("");
+        });
     }
 
     return (

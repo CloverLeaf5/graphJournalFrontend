@@ -115,6 +115,7 @@ const EntryViewerPage = () => {
         <div className='entry-div'>
             {imgDims.height>=imgDims.width ? <div>
                 <img onLoad={onImgLoad} src={imageSource} style={imageSource!=="journal.png" ? {height: "300px"} : {height: "150px"}} alt="Main photo for this entry"></img>
+                {entry.pictures[0] && entry.pictures[0].caption.length>0 && <h5>{entry.pictures[0].caption}</h5>}
                 <h4>{entry.startDate}</h4>
                 {entry.endDate && entry.endDate.length>0 && <h4>End Date: {entry.endDate}</h4>}
                 <h4>Type: {entry.typeText}</h4>
@@ -175,19 +176,21 @@ const EntryViewerPage = () => {
                         <h6>{metric.data}</h6>
                     </div>
                 )}
-                {moreImages.length>0 && <h5>Other Pictures:</h5>}
+                {moreImages.length>0 && <h3>Other Pictures:</h3>}
                 {moreImages.map((imageLink, idx) => 
                     <div key={idx}>
                         <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
+                        {entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
                     </div>
                 )}
-                {entry.useAPILocation && entry.APILocationString && <h4>{entry.APILocationString}</h4>}
+                {entry.useAPILocation && entry.APILocationString && <h3>{entry.APILocationString}</h3>}
                 {entry.useAPILocation && <Map entry={entry} />}
             </div>
 
 
             : <div>
                 <img onLoad={onImgLoad} src={imageSource} style={{width: "300px"}} alt="Main photo for this entry"></img>
+                {entry.pictures[0] && entry.pictures[0].caption.length>0 && <h5>{entry.pictures[0].caption}</h5>}
                 <h4>{entry.startDate}</h4>
                 {entry.endDate && entry.endDate.length>0 && <h4>End Date: {entry.endDate}</h4>}
                 <h2>{entry.title}</h2>
@@ -247,13 +250,14 @@ const EntryViewerPage = () => {
                         <h6>{metric.data}</h6>
                     </div>
                 )}
-                {moreImages.length>0 && <h5>Other Pictures:</h5>}
+                {moreImages.length>0 && <h4>Other Pictures:</h4>}
                 {moreImages.map((imageLink, idx) => 
                     <div key={idx}>
                         <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
+                        {entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
                     </div>
                 )}
-                {entry.useAPILocation && entry.APILocationString && <h4>{entry.APILocationString}</h4>}
+                {entry.useAPILocation && entry.APILocationString && <h3>{entry.APILocationString}</h3>}
                 {entry.useAPILocation && <Map entry={entry} />}
             </div>}
             <Button onClick={handleGoBack}>Go Back</Button>

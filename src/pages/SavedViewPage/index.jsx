@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
-import EntryCardOriginal from './EntryCardOriginal';
+import EntryCardOriginal from '../ViewEditPage/EntryCardOriginal';
 import Map from './Map';
 import "./quill.bubble.css";
 
