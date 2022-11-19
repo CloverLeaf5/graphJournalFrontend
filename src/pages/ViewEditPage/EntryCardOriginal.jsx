@@ -48,7 +48,7 @@ const EntryCardOriginal = (props) => {
             }
         }
         setImage()
-        setQuillArea(props.entry.details.slice(0,200));
+        setQuillArea(props.entry.details.slice(0,150));
     }, [props.orderChange, props.entriesArray])
 
     const onImgLoad = ({target:img}) => {
@@ -68,6 +68,7 @@ const EntryCardOriginal = (props) => {
                 }
                 <h4>{props.entry.startDate}</h4>
                 <h3>{props.entry.title}</h3>
+                <h4>{props.entry.subtitle}</h4>
                 <ReactQuill theme="bubble" value={quillArea} readOnly={true} />
             </div>
         </CardLayout>
@@ -81,6 +82,7 @@ const EntryCardOriginal = (props) => {
                     <p style={{textAlign: "right", fontSize: "10px"}}>More Pictures inside <img src="more_pix.png" alt="Polaroids icon" style={{maxHeight: "20px"}}></img></p>
                 }
                 <h3>{props.entry.title}</h3>
+                <h4>{props.entry.subtitle}</h4>
                 <ReactQuill theme="bubble" value={quillArea} readOnly={true} />
             </div>
         </CardLayout>}

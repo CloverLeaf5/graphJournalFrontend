@@ -47,17 +47,17 @@ const EntriesViewerPage = () => {
         <div className="entry-table">
             <h2>List of Entries (click to edit or delete)</h2>
             <Table.Head>
-                <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>Date</Table.TextCell>
-                <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>Type</Table.TextCell>
+                <Table.TextCell flexBasis={CELL_WIDTH/2} flexShrink={0} flexGrow={0}>Date</Table.TextCell>
+                <Table.TextCell flexBasis={CELL_WIDTH/2} flexShrink={0} flexGrow={0}>Type</Table.TextCell>
                 <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>Title</Table.TextCell>
             </Table.Head>
             <Table.Body>
                 {entriesArray.map((entry, idx) => 
                     <Table.Row key={idx} isSelectable={true} onSelect={()=>handleEntryClick(idx)}>
-                        <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
+                        <Table.TextCell flexBasis={CELL_WIDTH/2} flexShrink={0} flexGrow={0}>
                             {entry.startDate}
                         </Table.TextCell>
-                        <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>
+                        <Table.TextCell flexBasis={CELL_WIDTH/2} flexShrink={0} flexGrow={0}>
                             {entry.typeText}
                         </Table.TextCell>
                         <Table.TextCell flexBasis={CELL_WIDTH} flexShrink={0} flexGrow={0}>

@@ -193,6 +193,7 @@ const EntryViewerPage = () => {
                 {entry.pictures[0] && entry.pictures[0].caption.length>0 && <h5>{entry.pictures[0].caption}</h5>}
                 <h4>{entry.startDate}</h4>
                 {entry.endDate && entry.endDate.length>0 && <h4>End Date: {entry.endDate}</h4>}
+                <h4>Type: {entry.typeText}</h4>
                 <h2>{entry.title}</h2>
                 {entry.subtitle && entry.subtitle.length>0 && <h3>{entry.subtitle}</h3>}
                 {entry.isStarred && <img src="star.png" alt="Star icon" style={{height: "100px"}} />}
