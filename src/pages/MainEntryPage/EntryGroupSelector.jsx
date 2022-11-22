@@ -1,21 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components';
 import TagPersonCard from './TagPersonCard';
+import "../../styles/entry.css"
 
-
-const CardGrid = styled.div`
-width: 100%;
-height: auto;
-display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr;
-grid-gap: 5px;
-text-align: center;
-font-size: 16px;
-border-style: solid;
-margin: 8px auto 8px 5px;
-cursor: pointer;
-`;
 
 
 const EntryGroupSelector = (props) => {
@@ -53,9 +40,9 @@ const EntryGroupSelector = (props) => {
             <div>
                 {entryGroupsArray.length>0 && <div>
                     <h4>Select Groups:</h4>
-                    <CardGrid>
+                    <div className = "card-grid">
                         {entryGroupsArray.map((group, idx) => <TagPersonCard title={group.title} key={idx} handleClick={()=>handleClick(idx)} />)}
-                    </CardGrid>
+                    </div>
                 </div>}
             </div>
     )

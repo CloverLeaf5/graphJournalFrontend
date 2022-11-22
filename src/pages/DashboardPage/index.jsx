@@ -1,4 +1,4 @@
-import { Button } from 'evergreen-ui';
+import { Button, Label, Menu, Popover } from 'evergreen-ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BasicLayout from '../../layouts/BasicLayout';
@@ -32,24 +32,50 @@ const logout = async () => {
   return (
     <div>
       <Navbar>
-        <li>
-          <Link to="/tagEntry">Enter a new Tag</Link>
-        </li>
-        <li>
-          <Link to="/tagEdit">Edit or Delete a Tag</Link>
-        </li>
+        <ul>
+          <Popover
+            content={
+              <Menu>
+                <Menu.Item><Link to="/tagEntry" className="nav-link">Enter a new Tag</Link></Menu.Item>
+                <Menu.Item><Link to="/tagEdit" className="nav-link">Edit or Delete a Tag</Link></Menu.Item>
+              </Menu>
+            }
+          >
+            <li>
+              <Label>Tags</Label>
+            </li>
+          </Popover>
+          <Popover
+            content={
+              <Menu>
+                <Menu.Item><Link to="/personEntry" className="nav-link">Enter a new Person</Link></Menu.Item>
+                <Menu.Item><Link to="/personEdit" className="nav-link">Edit or Delete a Person</Link></Menu.Item>
+              </Menu>
+            }
+          >
+            <li>
+              <Label>People</Label>
+            </li>
+          </Popover>
+          <Popover
+            content={
+              <Menu>
+                <Menu.Item><Link to="/groupEntry" className="nav-link">Enter a new Group</Link></Menu.Item>
+                <Menu.Item><Link to="/groupEdit" className="nav-link">Edit or Delete a Group</Link></Menu.Item>
+              </Menu>
+            }
+          >
+            <li>
+              <Label>Groups</Label>
+            </li>
+          </Popover>
+        </ul>
       </Navbar>
       <BasicLayout>
         <h3>DASHBOARD FOR { user && user.fullName }</h3>
         <Link to="/viewCreation">Create a New View</Link>
         <Link to="/savedViewsList">See Saved Views</Link>
         <Link to="/mainEntry">Input a new Entry</Link>
-        <Link to="/tagEntry">Enter a new Tag</Link>
-        <Link to="/personEntry">Enter a new Person</Link>
-        <Link to="/groupEntry">Enter a new Group</Link>
-        <Link to="/tagEdit">Edit or Delete a Tag</Link>
-        <Link to="/personEdit">Edit or Delete a Person</Link>
-        <Link to="/groupEdit">Edit or Delete a Group</Link>
         <Link to="/entriesViewer">Edit or Delete an Entry</Link>
         <Button onClick={logout}>Logout</Button>
       </BasicLayout>

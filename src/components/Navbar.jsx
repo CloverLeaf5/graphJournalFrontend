@@ -24,9 +24,7 @@ const Navbar = ({ children }) => {
                 </svg>
             </button>
             <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu"}>
-                <ul>
-                    { children }
-                </ul>
+                { children }
             </div>
         </nav>
 

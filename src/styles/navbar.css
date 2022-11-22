@@ -30,10 +30,10 @@
 
 .navigation-menu li {
     list-style-type: none;
-    margin: 0 1rem;
+    margin: 0 1.5rem;
 }
 
-.navigation-menu li a {
+.nav-link {
     text-decoration: none;
     display: block;
     width: 100%;
@@ -80,11 +80,11 @@
     .navigation-menu li {
         text-align: center;
         margin: 0;
+        padding: 1.5rem 0;
     }
-    .navigation-menu li a {
+    .navigation-menu li label {
         color: black;
         width: 100%;
-        padding: 1.5rem 0;
     }
     .navigation-menu li:hover {
         background-color: #eee;

@@ -1,0 +1,44 @@
+.card-grid {
+    width: 80vw;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 8px;
+    text-align: center;
+    border-style: solid;
+    box-sizing: border-box;
+    margin: 8px auto 8px 5px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.tag-person-card {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-style: solid;
+    border-radius: 16px;
+    margin: 4px 0;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.tag-person-text {
+    font-size: 14px;
+    margin: 5px 0;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 1000px) {
+    .card-grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
