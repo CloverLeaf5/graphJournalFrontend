@@ -64,7 +64,9 @@ const ViewCreationPage = () => {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/tag/getTags", { withCredentials: true })
                 if (response && response.data){
-                    setTagsArray(response.data);
+                    let data = response.data;
+                    data.sort((a,b) => (a.title > b.title) ? 1 : ((a.title < b.title) ? -1 : 0));
+                    setTagsArray(data);
                 }
             } catch(err) {
                 console.log("Something went wrong with getting the Tags");
@@ -72,7 +74,9 @@ const ViewCreationPage = () => {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/person/getPeople", { withCredentials: true })
                 if (response && response.data){
-                    setPeopleArray(response.data);
+                    let data = response.data;
+                    data.sort((a,b) => (a.title > b.title) ? 1 : ((a.title < b.title) ? -1 : 0));
+                    setPeopleArray(data);
                 }
             } catch(err) {
                 console.log("Something went wrong with getting the People");
@@ -80,7 +84,9 @@ const ViewCreationPage = () => {
             try {
                 const response = await axios.get("http://localhost:5000/api/v1/group/getGroups", { withCredentials: true })
                 if (response && response.data){
-                    setGroupsArray(response.data);
+                    let data = response.data;
+                    data.sort((a,b) => (a.title > b.title) ? 1 : ((a.title < b.title) ? -1 : 0));
+                    setGroupsArray(data);
                 }
             } catch(err) {
                 console.log("Something went wrong with getting the Groups");
