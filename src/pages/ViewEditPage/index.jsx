@@ -110,6 +110,7 @@ const ViewEditPage = () => {
     }
 
     // GO TO THE ENTRY VIEW PAGE. DETAILS WILL BE STORED IN STATE, SO THE BROWSER BACK BUTTON DOESN'T WORK
+    // !!!!!! I THINK SOMETHING IS WRONG WITH THE NAVIGATION whereFrom /viewEdit vs /savedView !!!!!!
     const viewEntryAtClickedIndex = (close) => {
         // Must keep the viewID in state if this is a view to update
         close();

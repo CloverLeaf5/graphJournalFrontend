@@ -80,7 +80,7 @@ const EntryEditPage = () => {
             setQuillArea("");
             setPictureFields([]);
             setMetricsArray([]);
-            if ((entryType === "movie") || (entryType === "show")){
+            if ((entryType === "movie") || (entryType === "show") || (entryType === "book")){
                 if (response.data.length === 0){
                     setEntryType("nothing");
                     navigate("/dashboard");

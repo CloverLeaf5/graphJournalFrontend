@@ -205,7 +205,7 @@ const ViewCreationPage = () => {
 
     return (
         <BasicLayout>
-            <h1>Create a Vew View</h1>
+            <h1>Create a New View</h1>
             <h2>Selections below are optional and combined "AND" style</h2>
             <h2>Which means all options must be true for entries to be found</h2>
             <h4>Entries can be added or filtered out next</h4>

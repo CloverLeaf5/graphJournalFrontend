@@ -23,7 +23,17 @@ const EntryViewerPage = () => {
     useEffect(() => {
         const setImage = async () => {
             if (entry.whichImage===2){
-                setImageSource(`${entry.APIImageDBPath}${entry.APIImagePath}`)
+                // setImageSource(`${entry.APIImageDBPath}${entry.APIImagePath}`)
+                try {
+                    const response = await axios
+                        .post("http://localhost:5000/api/v1/entry/getAWSPhotoURL", {s3Key: entry.APIImageS3Key}, { withCredentials: true })
+                    if (response && response.data){
+                        setImageSource(response.data);
+                    }
+                }catch (err) {
+                    console.log("Something went wrong with getting picture(s) from AWS S3");
+                    console.log(err);
+                }
             } else if (entry.whichImage===1){
                 try {
                     const response = await axios

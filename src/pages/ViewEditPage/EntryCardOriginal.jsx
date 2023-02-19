@@ -31,7 +31,17 @@ const EntryCardOriginal = (props) => {
     useEffect(() => {
         const setImage = async () => {
             if (props.entry.whichImage===2){
-                setImageSource(`${props.entry.APIImageDBPath}${props.entry.APIImagePath}`)
+                //setImageSource(`${props.entry.APIImageDBPath}${props.entry.APIImagePath}`)
+                try {
+                    const response = await axios
+                        .post("http://localhost:5000/api/v1/entry/getAWSPhotoURL", {s3Key: props.entry.APIImageS3Key}, { withCredentials: true })
+                    if (response && response.data){
+                        setImageSource(response.data);
+                    }
+                }catch (err) {
+                    console.log("Something went wrong with getting picture(s) from AWS S3");
+                    console.log(err);
+                }
             } else if (props.entry.whichImage===1){
                 try {
                     const response = await axios
