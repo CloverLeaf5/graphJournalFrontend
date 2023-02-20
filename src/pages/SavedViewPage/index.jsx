@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
 import EntryCardOriginal from '../ViewEditPage/EntryCardOriginal';
+import EntryDetailedView from '../ViewEditPage/EntryDetailedView';
 import Map from './Map';
 import "./quill.bubble.css";
 
@@ -131,6 +132,16 @@ const SavedViewPage = () => {
                         {entryDisplayTypes[idx] === "default" && <EntryCardOriginal entry={entry} entriesArray={entriesArray} whenClicked={()=>{clickedIndex=idx}} />}
                         </Pane>
                     </Popover>
+                )}
+            </div>}
+
+            {viewType==="detailed" && <div className="detailed">
+                <h2>List of Entries</h2>
+                {entriesArray.map((entry, idx) => 
+                    <div>
+                        <EntryDetailedView key={idx} entry={entry} entriesArray={entriesArray} orderChange={mostRecentFirst} />
+                        {idx<entriesArray.length && <hr/>}
+                    </div>
                 )}
             </div>}
 

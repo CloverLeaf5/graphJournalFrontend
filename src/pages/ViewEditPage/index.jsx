@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BasicLayout from '../../layouts/BasicLayout';
 import EntryCardOriginal from './EntryCardOriginal';
+import EntryDetailedView from './EntryDetailedView';
 import Map from './Map';
 import "./quill.snow.css";
 
@@ -110,7 +111,6 @@ const ViewEditPage = () => {
     }
 
     // GO TO THE ENTRY VIEW PAGE. DETAILS WILL BE STORED IN STATE, SO THE BROWSER BACK BUTTON DOESN'T WORK
-    // !!!!!! I THINK SOMETHING IS WRONG WITH THE NAVIGATION whereFrom /viewEdit vs /savedView !!!!!!
     const viewEntryAtClickedIndex = (close) => {
         // Must keep the viewID in state if this is a view to update
         close();
@@ -279,6 +279,7 @@ const ViewEditPage = () => {
                 <Select value={viewType} onChange={e=>setViewType(e.target.value)}>
                     <option value="table">Table</option>
                     <option value="traditional">Traditional</option>
+                    <option value="detailed">All Details (Editing disabled)</option>
                     {/* <option value="timeline">Timeline</option> */}
                 </Select>
                 <Checkbox label="Chronology: Most recent first" checked={mostRecentFirst} onChange={e=>handleChronology(e)} />
@@ -332,6 +333,22 @@ const ViewEditPage = () => {
                     </Popover>
                 )}
             </div>}
+
+            {viewType==="detailed" && <div className="detailed">
+                <h2>List of Entries</h2>
+                {entriesArray.map((entry, idx) =>
+                    <div>
+                        <EntryDetailedView key={idx} entry={entry} entriesArray={entriesArray} orderChange={mostRecentFirst} />
+                        {idx<entriesArray.length-1 && 
+                            <div>
+                                <hr style={{height: "5px", background: "black"}}/>
+                                <br/>
+                            </div>}
+                            
+                    </div>
+                )}
+            </div>}
+
             <BasicLayout>
                 {missingData && <h3 style={{color: "red"}}>Title is required</h3>}
                 <Button onClick={saveView}>Save View</Button>
