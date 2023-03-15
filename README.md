@@ -1,3 +1,9 @@
+This is a bare-bones frontend in React to take input of journal entries, pictures by way of S3, locations, movies watched, etc. It is a journal/logger. It will also access the API to query the DB for entries and create a "view". GoogleMaps is supported. Multiple APIs are supported to bring in posters/covers of movies/shows/books. Google SSO is supported.
+
+Redux is only used for the logged in user state. In the future, Redux should carry the state of the current view data from the DB from one page to the next rather than sending this infomation with react-router.
+
+There is essentially no UI design yet. Multiple environment variables need to be set to run locally.
+
 # Getting Started with Create React App and Redux
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
