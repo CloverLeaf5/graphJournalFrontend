@@ -45,7 +45,7 @@ const MainEntryPage = () => {
         requiredData: false
     });
     const [APIData, setAPIData] = useState([]);
-    const [APIIndexSelection, setAPIIndexSelection] = useState("");
+    const [APIIndexSelection, setAPIIndexSelection] = useState(-1);  // -1 will be sent as default if no index is selected
     const [mapSearchField, setMapSearchField] = useState("");
     const [mapLocation, setMapLocation] = useState();
 
