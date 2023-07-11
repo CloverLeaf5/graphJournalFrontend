@@ -9,7 +9,6 @@
     box-sizing: border-box;
     margin: 8px auto 8px 5px;
     padding: 0 5px;
-    cursor: pointer;
 }
 
 .tag-person-card {
@@ -24,6 +23,17 @@
     cursor: pointer;
     box-sizing: border-box;
 }
+
+.tag-person-card:hover {
+    box-shadow: 3px 3px 5px black;
+}
+
+.tag-person-card:active {
+    background-color: lightgray;
+    box-shadow: none;
+    transform: scale(0.97);
+}
+
 
 .tag-person-text {
     font-size: 14px;
