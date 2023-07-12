@@ -4,6 +4,7 @@ import BasicLayout from '../../layouts/BasicLayout';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setAuthUser, setIsAuthenticated } from '../../app/authSlice';
+import "../../styles/general.css";
 
 function HomePage() {
 
@@ -37,8 +38,10 @@ function HomePage() {
 
   return (
     <BasicLayout>
-      <h3>HOMEPAGE</h3>
-      <Link to="/login">Login</Link>
+      <div className="homepage general">
+        <h3>Graph Journal</h3>
+        <Link to="/login" className="dash-link">Login</Link>
+      </div>
     </BasicLayout>
   );
 }

@@ -4,7 +4,7 @@ import GoogleButton from 'react-google-button';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { setAuthUser, setIsAuthenticated } from '../../app/authSlice';
-import BasicLayout from '../../layouts/BasicLayout';
+import "../../styles/general.css";
 
 function LoginPage() {
   const dispatch = useDispatch();
@@ -49,9 +49,9 @@ function LoginPage() {
   };
 
   return (
-    <BasicLayout>
+    <div className="login-page general">
       <GoogleButton onClick={redirectGoogleSSOAPI}/>
-    </BasicLayout>
+    </div>
   );
 }
 

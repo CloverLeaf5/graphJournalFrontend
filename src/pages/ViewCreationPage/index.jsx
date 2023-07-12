@@ -155,7 +155,7 @@ const ViewCreationPage = () => {
 
     const handleClickTag = (idx) => {
         let alreadyIn = selectedEntryTags.find((tag) => {
-            return tag._id === groupsArray[idx]._id;
+            return tag._id === tagsArray[idx]._id;
         });
         if (alreadyIn) return;
         setSelectedEntryTags([...selectedEntryTags, tagsArray[idx]]);
