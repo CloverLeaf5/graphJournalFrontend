@@ -20,6 +20,8 @@ const EntryViewerPage = () => {
                                             width:"100px"})
     const [moreImages, setMoreImages] = useState([]);
 
+    // entry.whichImage === 0 if no pictures, === 1 if normal images, === 2 if API image
+
     useEffect(() => {
         const setImage = async () => {
             if (entry.whichImage===2){
@@ -62,6 +64,22 @@ const EntryViewerPage = () => {
                             if (response && response.data){
                                 photoLinksArray.push(response.data);
                             }
+                        }
+                    })
+                    setMoreImages(photoLinksArray);
+                } catch (err) {
+                    console.log("Something went wrong with getting the rest of the pictures from AWS S3");
+                    console.log(err);
+                }
+            } else if (entry.whichImage===2 && entry.pictures.length>0){
+                // Get the image links for each one
+                let photoLinksArray = [];
+                try {
+                    entry.pictures.map(async (picture, idx) => {
+                        const response = await axios
+                            .post("http://localhost:5000/api/v1/entry/getAWSPhotoURL", {s3Key: picture.location}, { withCredentials: true })
+                        if (response && response.data){
+                            photoLinksArray.push(response.data);
                         }
                     })
                     setMoreImages(photoLinksArray);
@@ -190,7 +208,8 @@ const EntryViewerPage = () => {
                 {moreImages.map((imageLink, idx) => 
                     <div key={idx}>
                         <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
-                        {entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
+                        {entry.whichImage===1 && entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
+                        {entry.whichImage===2 && entry.pictures[idx].caption.length>0 && <h5>{entry.pictures[idx].caption}</h5>}
                     </div>
                 )}
                 {entry.useAPILocation && entry.APILocationString && <h3>{entry.APILocationString}</h3>}
@@ -265,7 +284,8 @@ const EntryViewerPage = () => {
                 {moreImages.map((imageLink, idx) => 
                     <div key={idx}>
                         <img src={imageLink} style={{maxWidth: "300px", maxHeight: "300px"}} alt="Additional image for this entry"></img>
-                        {entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
+                        {entry.whichImage===1 && entry.pictures[idx+1].caption.length>0 && <h5>{entry.pictures[idx+1].caption}</h5>}
+                        {entry.whichImage===2 && entry.pictures[idx].caption.length>0 && <h5>{entry.pictures[idx].caption}</h5>}
                     </div>
                 )}
                 {entry.useAPILocation && entry.APILocationString && <h3>{entry.APILocationString}</h3>}
